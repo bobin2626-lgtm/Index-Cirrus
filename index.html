@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRRUS Logistics Marketplace</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f1f5f9;
+}
+
+.hidden-tab{
+display:none;
+}
+
+.sidebar-scroll::-webkit-scrollbar{
+width:4px;
+}
+
+.sidebar-scroll::-webkit-scrollbar-thumb{
+background:#cbd5e1;
+border-radius:20px;
+}
+</style>
+</head>
+
+<body class="min-h-screen text-slate-800">
+
+<!-- SPLASH -->
+<div id="splash-screen" class="fixed inset-0 bg-[#082545] z-50 flex items-center justify-center transition-all duration-1000">
+<div class="text-center animate-pulse">
+<img src="Cirrus.png" class="h-28 mx-auto mb-6 animate-bounce">
+<h1 class="text-white text-5xl font-black">CIRRUS</h1>
+<p class="text-[#90E0EF] uppercase tracking-[0.4em] text-sm mt-4">
+Logistics Marketplace
+</p>
+</div>
+</div>
+
+<!-- AUTH -->
+<div id="auth-container" class="min-h-screen flex items-center justify-center px-6 hidden">
+<div class="max-w-md w-full">
+
+<div class="bg-white rounded-3xl p-2 shadow-lg flex gap-2 mb-5">
+<button onclick="mostrarLogin()" class="flex-1 bg-[#082545] text-white py-3 rounded-2xl text-sm font-bold">
+Iniciar Sesión
+</button>
+
+<button onclick="mostrarRegistro()" class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-2xl text-sm font-bold">
+Registrarse
+</button>
+</div>
+
+<!-- LOGIN -->
+<div id="login-box" class="bg-white rounded-3xl border border-slate-200 shadow-xl p-8">
+<div class="text-center mb-8">
+<img src="Cirrus.png" class="h-16 mx-auto mb-4">
+<h2 class="text-3xl font-black text-[#082545]">Bienvenido</h2>
+</div>
+
+<div class="space-y-4">
+<input id="login-email" type="email" placeholder="Correo electrónico" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<input id="login-password" type="password" placeholder="Contraseña" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<button onclick="loginUsuario()" class="w-full bg-[#082545] text-white py-4 rounded-2xl text-sm font-bold uppercase">
+Entrar
+</button>
+</div>
+</div>
+
+<!-- REGISTER -->
+<div id="register-box" class="bg-white rounded-3xl border border-slate-200 shadow-xl p-8 hidden">
+<div class="text-center mb-8">
+<img src="Cirrus.png" class="h-16 mx-auto mb-4">
+<h2 class="text-3xl font-black text-[#082545]">Crear Cuenta</h2>
+</div>
+
+<div class="space-y-4">
+<input id="register-name" type="text" placeholder="Nombre o Empresa" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<input id="register-id" type="text" placeholder="Cédula o RIF Jurídico" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<input id="register-phone" type="text" placeholder="Número de teléfono" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<input id="register-email" type="email" placeholder="Correo electrónico" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<input id="register-password" type="password" placeholder="Contraseña" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm outline-none">
+
+<button onclick="registrarUsuario()" class="w-full bg-emerald-600 text-white py-4 rounded-2xl text-sm font-bold uppercase">
+Crear Cuenta
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar" class="fixed left-0 top-0 h-screen w-[280px] bg-white border-r border-slate-200 overflow-y-auto sidebar-scroll hidden">
+
+<div class="p-5 border-b border-slate-200">
+<img src="Cirrus.png" class="h-12 mb-3">
+
+<h2 class="text-2xl font-black text-[#082545]">
+CIRRUS
+</h2>
+</div>
+
+<!-- NAVIERAS -->
+
+<div class="border-b border-slate-100">
+
+<button
+onclick="toggleMenu('navieras-menu')"
+class="w-full flex items-center justify-between px-5 py-4 text-left"
+>
+
+<div class="flex items-center gap-3">
+<i class="fa-solid fa-ship text-[#082545] text-sm"></i>
+
+<span class="font-bold text-sm">
+Empresas Navieras
+</span>
+</div>
+
+<i class="fa-solid fa-chevron-down text-xs"></i>
+
+</button>
+
+<div id="navieras-menu" class="hidden px-5 pb-4 space-y-2 text-sm text-slate-600">
+
+<p>Maersk</p>
+<p>MSC</p>
+<p>CMA CGM</p>
+<p>Hapag-Lloyd</p>
+<p>Evergreen</p>
+<p>COSCO</p>
+<p>ONE</p>
+<p>ZIM</p>
+<p>Yang Ming</p>
+<p>PIL</p>
+<p>Hamburg Süd</p>
+<p>Wan Hai</p>
+<p>OOCL</p>
+<p>Seaboard Marine</p>
+<p>Matson</p>
+<p>Safmarine</p>
+<p>Hyundai Merchant</p>
+<p>Gold Star Line</p>
+<p>Pacific International</p>
+<p>Arkas Line</p>
+
+</div>
+
+</div>
+
+<!-- AEREAS -->
+
+<div class="border-b border-slate-100">
+
+<button
+onclick="toggleMenu('aereas-menu')"
+class="w-full flex items-center justify-between px-5 py-4 text-left"
+>
+
+<div class="flex items-center gap-3">
+<i class="fa-solid fa-plane text-[#082545] text-sm"></i>
+
+<span class="font-bold text-sm">
+Empresas Aéreas
+</span>
+</div>
+
+<i class="fa-solid fa-chevron-down text-xs"></i>
+
+</button>
+
+<div id="aereas-menu" class="hidden px-5 pb-4 space-y-2 text-sm text-slate-600">
+
+<p>DHL Aviation</p>
+<p>FedEx Cargo</p>
+<p>UPS Airlines</p>
+<p>Atlas Air</p>
+<p>LATAM Cargo</p>
+<p>Qatar Cargo</p>
+<p>Emirates SkyCargo</p>
+<p>Cargolux</p>
+<p>Avianca Cargo</p>
+<p>Lufthansa Cargo</p>
+<p>Korean Air Cargo</p>
+<p>Turkish Cargo</p>
+<p>Air France Cargo</p>
+<p>American Airlines Cargo</p>
+<p>Copa Cargo</p>
+<p>Amazon Air</p>
+<p>Singapore Airlines Cargo</p>
+<p>ANA Cargo</p>
+<p>Etihad Cargo</p>
+<p>China Airlines Cargo</p>
+
+</div>
+
+</div>
+
+<!-- ADUANAS -->
+
+<div class="border-b border-slate-100">
+
+<button
+onclick="toggleMenu('aduanas-menu')"
+class="w-full flex items-center justify-between px-5 py-4 text-left"
+>
+
+<div class="flex items-center gap-3">
+<i class="fa-solid fa-building-shield text-[#082545] text-sm"></i>
+
+<span class="font-bold text-sm">
+Aduanas
+</span>
+</div>
+
+<i class="fa-solid fa-chevron-down text-xs"></i>
+
+</button>
+
+<div id="aduanas-menu" class="hidden px-5 pb-4 space-y-2 text-sm text-slate-600">
+
+<p>Miami</p>
+<p>Panamá</p>
+<p>Cartagena</p>
+<p>La Guaira</p>
+<p>Puerto Cabello</p>
+<p>Houston</p>
+<p>Los Angeles</p>
+<p>Shanghai</p>
+<p>Hong Kong</p>
+<p>Dubai</p>
+<p>Rotterdam</p>
+<p>Hamburgo</p>
+<p>Valencia</p>
+<p>Buenos Aires</p>
+<p>Callao</p>
+<p>Veracruz</p>
+<p>Manzanillo</p>
+<p>Santos</p>
+<p>Tokyo</p>
+<p>Singapore</p>
+
+</div>
+
+</div>
+
+<!-- TRANSPORTES -->
+
+<div class="border-b border-slate-100">
+
+<button
+onclick="toggleMenu('transportes-menu')"
+class="w-full flex items-center justify-between px-5 py-4 text-left"
+>
+
+<div class="flex items-center gap-3">
+<i class="fa-solid fa-truck text-[#082545] text-sm"></i>
+
+<span class="font-bold text-sm">
+Transportes
+</span>
+</div>
+
+<i class="fa-solid fa-chevron-down text-xs"></i>
+
+</button>
+
+<div id="transportes-menu" class="hidden px-5 pb-4 space-y-2 text-sm text-slate-600">
+
+<p>Camión Nacional</p>
+<p>Entrega Premium</p>
+<p>Distribución Express</p>
+<p>Carga Refrigerada</p>
+<p>Transporte Blindado</p>
+<p>Carga Pesada</p>
+<p>Furgón Ejecutivo</p>
+<p>Pickup Express</p>
+<p>Trailer Internacional</p>
+<p>Courier Urbano</p>
+
+</div>
+
+</div>
+
+<!-- SOPORTE -->
+
+<div class="p-5">
+
+<a
+href="https://wa.me/584162409427"
+target="_blank"
+class="bg-green-500 rounded-2xl p-4 text-white flex items-center gap-3"
+>
+
+<i class="fa-brands fa-whatsapp text-2xl"></i>
+
+<div>
+<h3 class="text-sm font-bold">
+Soporte Técnico
+</h3>
+
+<p class="text-xs">
+04162409427
+</p>
+</div>
+
+</a>
+
+</div>
+
+</aside>
+
+<!-- HEADER -->
+<header id="main-header" class="hidden ml-[260px] px-6 py-5">
+<div class="bg-white border border-slate-200 rounded-3xl px-6 py-4 flex items-center justify-between shadow-sm">
+<div>
+<h1 class="text-2xl font-black text-[#082545]">CIRRUS Logistics</h1>
+<p class="text-xs uppercase tracking-[0.3em] text-slate-400 mt-1">Freight Marketplace</p>
+</div>
+
+<div class="flex items-center gap-4">
+
+<div class="flex items-center gap-3 bg-slate-50 border border-slate-200 rounded-2xl px-4 py-2">
+
+<div class="h-9 w-9 rounded-full bg-[#082545] flex items-center justify-center text-white text-sm font-bold">
+U
+</div>
+
+<div>
+
+<h3 id="profile-name" class="text-sm font-bold text-[#082545]">
+Usuario
+</h3>
+
+<p id="profile-email" class="text-xs text-slate-500">
+usuario@email.com
+</p>
+
+</div>
+
+</div>
+
+<button
+onclick="cerrarSesion()"
+class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase transition"
+>
+
+Cerrar Sesión
+
+</button>
+
+</div>
+</header>
+
+<!-- ADMIN -->
+<div id="admin-panel" class="hidden ml-[260px] p-6">
+<h1 class="text-4xl font-black text-[#082545] mb-8">Panel Administrador</h1>
+
+<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm mb-8">
+<h2 class="text-2xl font-black text-[#082545] mb-6">Usuarios Registrados</h2>
+<div id="users-container" class="space-y-4"></div>
+</div>
+
+<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
+<h2 class="text-2xl font-black text-[#082545] mb-6">Solicitudes</h2>
+<div id="requests-container" class="space-y-4"></div>
+</div>
+</div>
+
+<!-- MAIN -->
+<main id="main-content" class="hidden ml-[260px] px-6 pb-10">
+
+<div class="grid lg:grid-cols-2 gap-6">
+
+<section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+<h2 class="text-3xl font-black text-[#082545] mb-8">Configura tu operación</h2>
+
+<div class="space-y-4">
+<select id="tipo-transporte" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm">
+<option value="naviera">Naviera Marítima</option>
+<option value="aerea">Carga Aérea</option>
+</select>
+
+<select id="empresa-logistica" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm"></select>
+
+<select id="aduana-select" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm">
+<option>Cartagena</option>
+<option>Miami</option>
+<option>Panamá</option>
+</select>
+
+<select id="transporte-select" class="w-full border border-slate-200 rounded-2xl px-5 py-4 text-sm">
+<option>Camión Nacional</option>
+<option>Distribución Express</option>
+<option>Entrega Premium</option>
+</select>
+
+<div class="grid grid-cols-2 gap-4 pt-2">
+<button onclick="calcularOperacion()" class="bg-[#082545] text-white py-4 rounded-2xl text-sm font-bold uppercase">
+Calcular
+</button>
+
+<button onclick="enviarSolicitud()" class="bg-emerald-600 text-white py-4 rounded-2xl text-sm font-bold uppercase">
+Enviar
+</button>
+</div>
+</div>
+</section>
+
+<section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8">
+<h2 class="text-3xl font-black text-[#082545] mb-8">Resumen</h2>
+
+<div id="resultado-box" class="hidden space-y-4">
+<div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+<p class="text-xs uppercase text-slate-400 font-bold mb-2">Tiempo estimado</p>
+<h3 id="resultado-tiempo" class="text-4xl font-black text-emerald-600"></h3>
+</div>
+</div>
+</section>
+</div>
+
+<!-- HISTORIAL -->
+<section class="bg-white rounded-3xl border border-slate-200 shadow-sm p-8 mt-6">
+<h2 class="text-3xl font-black text-[#082545] mb-6">Historial</h2>
+<div id="historial-container" class="space-y-4">
+<p class="text-slate-400 text-sm">No hay solicitudes todavía</p>
+</div>
+</section>
+</main>
+
+<script>
+
+let users = JSON.parse(localStorage.getItem('cirrusUsers')) || [];
+let requests = JSON.parse(localStorage.getItem('cirrusRequests')) || [];
+let historialSolicitudes = JSON.parse(localStorage.getItem('cirrusHistorial')) || [];
+let usuarioActual =
+localStorage.getItem('cirrusSession') || null;
+
+const navieras = [
+
+{nombre:'Maersk', tiempo:'22 a 30 días'},
+{nombre:'MSC', tiempo:'18 a 26 días'},
+{nombre:'CMA CGM', tiempo:'20 a 28 días'},
+{nombre:'Hapag-Lloyd', tiempo:'19 a 27 días'},
+{nombre:'Evergreen', tiempo:'24 a 32 días'},
+{nombre:'COSCO', tiempo:'21 a 29 días'},
+{nombre:'ONE', tiempo:'20 a 30 días'},
+{nombre:'ZIM', tiempo:'18 a 25 días'},
+{nombre:'Yang Ming', tiempo:'23 a 31 días'},
+{nombre:'PIL', tiempo:'19 a 28 días'},
+{nombre:'Hamburg Süd', tiempo:'22 a 30 días'},
+{nombre:'Wan Hai', tiempo:'17 a 24 días'},
+{nombre:'OOCL', tiempo:'20 a 29 días'},
+{nombre:'Seaboard Marine', tiempo:'14 a 22 días'},
+{nombre:'Matson', tiempo:'13 a 20 días'},
+{nombre:'Safmarine', tiempo:'22 a 31 días'},
+{nombre:'Hyundai Merchant', tiempo:'18 a 26 días'},
+{nombre:'Gold Star Line', tiempo:'16 a 25 días'},
+{nombre:'Pacific International', tiempo:'20 a 28 días'},
+{nombre:'Arkas Line', tiempo:'15 a 23 días'}
+
+];
+
+const aerolineas = [
+
+{nombre:'DHL Aviation', tiempo:'3 a 5 días'},
+{nombre:'FedEx Cargo', tiempo:'2 a 4 días'},
+{nombre:'UPS Airlines', tiempo:'2 a 5 días'},
+{nombre:'Atlas Air', tiempo:'3 a 6 días'},
+{nombre:'LATAM Cargo', tiempo:'2 a 4 días'},
+{nombre:'Qatar Cargo', tiempo:'3 a 5 días'},
+{nombre:'Emirates SkyCargo', tiempo:'3 a 6 días'},
+{nombre:'Cargolux', tiempo:'2 a 5 días'},
+{nombre:'Avianca Cargo', tiempo:'1 a 3 días'},
+{nombre:'Lufthansa Cargo', tiempo:'2 a 5 días'},
+{nombre:'Korean Air Cargo', tiempo:'3 a 6 días'},
+{nombre:'Turkish Cargo', tiempo:'2 a 5 días'},
+{nombre:'Air France Cargo', tiempo:'3 a 6 días'},
+{nombre:'American Airlines Cargo', tiempo:'2 a 4 días'},
+{nombre:'Copa Cargo', tiempo:'1 a 3 días'},
+{nombre:'Amazon Air', tiempo:'2 a 4 días'},
+{nombre:'Singapore Airlines Cargo', tiempo:'3 a 6 días'},
+{nombre:'ANA Cargo', tiempo:'2 a 5 días'},
+{nombre:'Etihad Cargo', tiempo:'3 a 6 días'},
+{nombre:'China Airlines Cargo', tiempo:'2 a 5 días'}
+
+];
+
+const aduanas = [
+
+'Miami',
+'Panamá',
+'Cartagena',
+'La Guaira',
+'Puerto Cabello',
+'Houston',
+'Los Angeles',
+'Shanghai',
+'Hong Kong',
+'Dubai',
+'Rotterdam',
+'Hamburgo',
+'Valencia',
+'Buenos Aires',
+'Callao',
+'Veracruz',
+'Manzanillo',
+'Santos',
+'Tokyo',
+'Singapore'
+
+];
+
+const transportes = [
+
+'Camión Nacional',
+'Entrega Premium',
+'Distribución Express',
+'Carga Refrigerada',
+'Transporte Blindado',
+'Carga Pesada',
+'Furgón Ejecutivo',
+'Pickup Express',
+'Trailer Internacional',
+'Courier Urbano'
+
+];
+
+window.onload = ()=>{
+setTimeout(()=>{
+document.getElementById('splash-screen').style.opacity='0';
+setTimeout(()=>{
+document.getElementById('splash-screen').style.display='none';
+document.getElementById('auth-container').classList.remove('hidden');
+},1000);
+},2500);
+
+window.onload = ()=>{
+
+setTimeout(()=>{
+
+document.getElementById('splash-screen')
+.style.opacity='0';
+
+setTimeout(()=>{
+
+document.getElementById('splash-screen')
+.style.display='none';
+
+// =========================
+// SESIÓN GUARDADA
+// =========================
+
+const session =
+localStorage.getItem('cirrusSession');
+
+const adminSession =
+localStorage.getItem('cirrusAdmin');
+
+// ADMIN
+
+if(adminSession === 'true'){
+
+document.getElementById('auth-container')
+.style.display='none';
+
+document.getElementById('sidebar')
+.classList.remove('hidden');
+
+document.getElementById('admin-panel')
+.classList.remove('hidden');
+
+if(typeof renderUsers === 'function'){
+renderUsers();
+}
+
+if(typeof renderRequests === 'function'){
+renderRequests();
+}
+
+return;
+
+}
+
+// USUARIO
+
+if(session){
+
+users =
+JSON.parse(localStorage.getItem('cirrusUsers')) || [];
+
+const user =
+users.find(u => u.correo === session);
+
+if(user){
+
+entrarMarketplace(
+user.nombre,
+user.correo
+);
+
+return;
+
+}
+
+}
+
+// MOSTRAR LOGIN
+
+document.getElementById('auth-container')
+.classList.remove('hidden');
+
+},1000);
+
+},2500);
+
+}
+
+document.getElementById('auth-container')
+.classList.remove('hidden');
+
+cargarEmpresas();
+};
+
+function mostrarLogin(){
+document.getElementById('login-box').classList.remove('hidden');
+document.getElementById('register-box').classList.add('hidden');
+}
+
+function mostrarRegistro(){
+document.getElementById('register-box').classList.remove('hidden');
+document.getElementById('login-box').classList.add('hidden');
+}
+
+function registrarUsuario(){
+
+users = JSON.parse(localStorage.getItem('cirrusUsers')) || [];
+
+const nombre = document.getElementById('register-name').value.trim();
+const cedula = document.getElementById('register-id').value.trim();
+const telefono = document.getElementById('register-phone').value.trim();
+const correo = document.getElementById('register-email').value.trim();
+const password = document.getElementById('register-password').value.trim();
+
+if(nombre === '' || cedula === '' || telefono === '' || correo === '' || password === ''){
+alert('Completa todos los campos');
+return;
+}
+
+const existeUsuario = users.find(user => user.correo === correo);
+
+if(existeUsuario){
+alert('Ese correo ya existe');
+return;
+}
+
+const user = {
+nombre:nombre,
+cedula:cedula,
+telefono:telefono,
+correo:correo,
+password:password
+};
+
+users.push(user);
+
+localStorage.setItem('cirrusUsers',JSON.stringify(users));
+
+alert('Registro exitoso');
+
+entrarMarketplace(user.nombre,user.correo);
+}
+
+function loginUsuario(){
+
+const email =
+document.getElementById('login-email').value;
+
+const password =
+document.getElementById('login-password').value;
+
+// =========================
+// CARGAR STORAGE
+// =========================
+
+users =
+JSON.parse(localStorage.getItem('cirrusUsers')) || [];
+
+requests =
+JSON.parse(localStorage.getItem('cirrusRequests')) || [];
+
+historialSolicitudes =
+JSON.parse(localStorage.getItem('cirrusHistorial')) || [];
+
+// =========================
+// LOGIN ADMIN
+// =========================
+
+if(
+email === 'admincirrusnet2026@gmail.com'
+&&
+password === 'Admin'
+){
+
+// GUARDAR SESIÓN ADMIN
+
+localStorage.setItem(
+'cirrusAdmin',
+'true'
+);
+
+localStorage.setItem(
+'cirrusSession',
+email
+);
+
+// OCULTAR LOGIN
+
+document.getElementById('auth-container')
+.style.display='none';
+
+// MOSTRAR PANEL ADMIN
+
+document.getElementById('sidebar')
+.classList.remove('hidden');
+
+document.getElementById('admin-panel')
+.classList.remove('hidden');
+
+// RENDER ADMIN
+
+renderUsers();
+renderRequests();
+
+return;
+
+}
+
+// =========================
+// BUSCAR USUARIO
+// =========================
+
+const usuarioEncontrado =
+users.find(user =>
+user.correo === email
+);
+
+// VALIDAR USUARIO
+
+if(!usuarioEncontrado){
+
+alert('Usuario no registrado');
+
+return;
+
+}
+
+// VALIDAR PASSWORD
+
+if(usuarioEncontrado.password !== password){
+
+alert('Contraseña incorrecta');
+
+return;
+
+}
+
+// =========================
+// GUARDAR SESIÓN USUARIO
+// =========================
+
+localStorage.setItem(
+'cirrusSession',
+email
+);
+
+localStorage.removeItem(
+'cirrusAdmin'
+);
+
+// =========================
+// ENTRAR AL MARKETPLACE
+// =========================
+
+entrarMarketplace(
+usuarioEncontrado.nombre,
+usuarioEncontrado.correo
+);
+
+}
+
+function entrarMarketplace(nombre,correo){
+
+usuarioActual = correo;
+
+// =========================
+// GUARDAR SESIÓN
+// =========================
+
+localStorage.setItem(
+'cirrusSession',
+correo
+);
+
+localStorage.removeItem(
+'cirrusAdmin'
+);
+
+// =========================
+// MOSTRAR MARKETPLACE
+// =========================
+
+document.getElementById('auth-container')
+.style.display='none';
+
+document.getElementById('sidebar')
+.classList.remove('hidden');
+
+document.getElementById('main-header')
+.classList.remove('hidden');
+
+document.getElementById('main-content')
+.classList.remove('hidden');
+
+// =========================
+// PERFIL
+// =========================
+
+document.getElementById('profile-name')
+.innerText = nombre;
+
+document.getElementById('profile-email')
+.innerText = correo;
+
+// =========================
+// HISTORIAL
+// =========================
+
+renderHistorial();
+
+}
+
+function cargarEmpresas(){
+
+const tipo = document.getElementById('tipo-transporte').value;
+const select = document.getElementById('empresa-logistica');
+
+select.innerHTML='';
+
+const empresas = tipo === 'naviera' ? navieras : aerolineas;
+
+empresas.forEach((empresa)=>{
+select.innerHTML += `
+<option value="${empresa.nombre}|${empresa.tiempo}">
+${empresa.nombre}
+</option>
+`;
+});
+}
+
+document.getElementById('tipo-transporte').addEventListener('change', cargarEmpresas);
+
+function calcularOperacion(){
+
+const empresa = document.getElementById('empresa-logistica').value.split('|');
+
+document.getElementById('resultado-box').classList.remove('hidden');
+
+document.getElementById('resultado-tiempo').innerText=empresa[1];
+}
+
+function enviarSolicitud(){
+
+  requests =
+    JSON.parse(localStorage.getItem('cirrusRequests')) || [];
+
+  historialSolicitudes =
+    JSON.parse(localStorage.getItem('cirrusHistorial')) || [];
+
+  const solicitud = {
+
+    usuario:usuarioActual,
+
+    empresa:
+      document.getElementById('empresa-logistica').value,
+
+    aduana:
+      document.getElementById('aduana-select').value,
+
+    transporte:
+      document.getElementById('transporte-select').value,
+
+    estado:'Pendiente',
+
+    comentario:''
+
+  };
+
+  requests.push(solicitud);
+
+  historialSolicitudes.push(solicitud);
+
+  localStorage.setItem(
+    'cirrusRequests',
+    JSON.stringify(requests)
+  );
+
+  localStorage.setItem(
+    'cirrusHistorial',
+    JSON.stringify(historialSolicitudes)
+  );
+
+  alert('Solicitud enviada correctamente');
+
+  renderHistorial();
+
+}
+
+function renderUsers(){
+
+const container = document.getElementById('users-container');
+container.innerHTML='';
+
+users.forEach((user)=>{
+
+container.innerHTML += `
+<div class="border border-slate-200 rounded-2xl p-5">
+<h3 class="font-black text-[#082545]">${user.nombre}</h3>
+<p class="text-sm text-slate-500">${user.correo}</p>
+<p class="text-sm text-slate-500">${user.cedula}</p>
+<p class="text-sm text-slate-500 mb-4">${user.telefono}</p>
+
+<button onclick="eliminarUsuario('${user.correo}')" class="bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase">
+Eliminar Usuario
+</button>
+</div>
+`;
+});
+}
+
+function eliminarUsuario(correo){
+
+  // ELIMINAR USUARIO
+
+  users = users.filter(user =>
+    user.correo !== correo
+  );
+
+  // ELIMINAR SOLICITUDES
+
+  requests = requests.filter(req =>
+    req.usuario !== correo
+  );
+
+  // ELIMINAR HISTORIAL
+
+  historialSolicitudes =
+    historialSolicitudes.filter(hist =>
+      hist.usuario !== correo
+    );
+
+  // GUARDAR TODO
+
+  localStorage.setItem(
+    'cirrusUsers',
+    JSON.stringify(users)
+  );
+
+  localStorage.setItem(
+    'cirrusRequests',
+    JSON.stringify(requests)
+  );
+
+  localStorage.setItem(
+    'cirrusHistorial',
+    JSON.stringify(historialSolicitudes)
+  );
+
+  alert('Usuario e historial eliminados');
+
+  // RECARGAR PANELES
+
+  renderUsers();
+
+  renderRequests();
+
+}
+
+function renderRequests(){
+
+  requests =
+    JSON.parse(localStorage.getItem('cirrusRequests')) || [];
+
+  const container =
+    document.getElementById('requests-container');
+
+  container.innerHTML='';
+
+  requests.forEach((req,index)=>{
+
+    container.innerHTML += `
+
+      <div class="border border-slate-200 rounded-2xl p-5 bg-white">
+
+        <div class="flex items-center justify-between mb-4">
+
+          <h3 class="font-black text-[#082545] text-lg">
+            Solicitud #${index + 1}
+          </h3>
+
+          <span class="
+            ${
+              req.estado === 'Aprobada'
+              ?
+              'bg-emerald-100 text-emerald-700'
+              :
+              req.estado === 'Denegada'
+              ?
+              'bg-red-100 text-red-700'
+              :
+              'bg-yellow-100 text-yellow-700'
+            }
+            px-4 py-2 rounded-xl text-xs font-bold uppercase
+          ">
+
+            ${
+              req.estado === 'Aprobada'
+              ?
+              '✅ APROBADA'
+              :
+              req.estado === 'Denegada'
+              ?
+              '❌ DENEGADA'
+              :
+              '⏳ PENDIENTE'
+            }
+
+          </span>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-5">
+
+          <div class="bg-slate-50 rounded-2xl p-4">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Usuario
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${req.usuario}
+            </p>
+
+          </div>
+
+          <div class="bg-slate-50 rounded-2xl p-4">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Empresa
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${req.empresa}
+            </p>
+
+          </div>
+
+          <div class="bg-slate-50 rounded-2xl p-4">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Aduana
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${req.aduana}
+            </p>
+
+          </div>
+
+          <div class="bg-slate-50 rounded-2xl p-4">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Transporte
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${req.transporte}
+            </p>
+
+          </div>
+
+        </div>
+
+        <textarea
+          id="comentario-${index}"
+          placeholder="Escribir comentario al usuario..."
+          class="w-full border border-slate-200 rounded-2xl p-4 text-sm outline-none mb-4"
+        >${req.comentario || ''}</textarea>
+
+        ${
+          req.estado === 'Pendiente'
+          ?
+          `
+          <div class="flex flex-wrap gap-3">
+
+            <button
+              onclick="aprobarSolicitud(${index})"
+              class="bg-emerald-600 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase"
+            >
+              Aprobar
+            </button>
+
+            <button
+              onclick="denegarSolicitud(${index})"
+              class="bg-red-600 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase"
+            >
+              Denegar
+            </button>
+
+            <button
+              onclick="guardarComentario(${index})"
+              class="bg-[#082545] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase"
+            >
+              Guardar Comentario
+            </button>
+
+            <button
+              onclick="eliminarSolicitud(${index})"
+              class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase"
+            >
+              Eliminar
+            </button>
+
+          </div>
+          `
+          :
+          `
+          <div class="flex gap-3">
+
+            <button
+              onclick="guardarComentario(${index})"
+              class="bg-[#082545] text-white px-4 py-2 rounded-xl text-xs font-bold uppercase"
+            >
+              Actualizar Comentario
+            </button>
+
+            <button
+              onclick="eliminarSolicitud(${index})"
+              class="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase"
+            >
+              Eliminar
+            </button>
+
+          </div>
+          `
+        }
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+function aprobarSolicitud(index){
+
+  requests[index].estado='Aprobada';
+
+  // ACTUALIZAR HISTORIAL DEL USUARIO
+
+  historialSolicitudes = historialSolicitudes.map(item => {
+
+    if(
+      item.usuario === requests[index].usuario
+      &&
+      item.empresa === requests[index].empresa
+      &&
+      item.aduana === requests[index].aduana
+      &&
+      item.transporte === requests[index].transporte
+    ){
+
+      item.estado='Aprobada';
+
+    }
+
+    return item;
+
+  });
+
+  localStorage.setItem(
+    'cirrusRequests',
+    JSON.stringify(requests)
+  );
+
+  localStorage.setItem(
+    'cirrusHistorial',
+    JSON.stringify(historialSolicitudes)
+  );
+
+  renderRequests();
+
+}
+
+function denegarSolicitud(index){
+
+  requests[index].estado='Denegada';
+
+  // ACTUALIZAR HISTORIAL DEL USUARIO
+
+  historialSolicitudes = historialSolicitudes.map(item => {
+
+    if(
+      item.usuario === requests[index].usuario
+      &&
+      item.empresa === requests[index].empresa
+      &&
+      item.aduana === requests[index].aduana
+      &&
+      item.transporte === requests[index].transporte
+    ){
+
+      item.estado='Denegada';
+
+    }
+
+    return item;
+
+  });
+
+  localStorage.setItem(
+    'cirrusRequests',
+    JSON.stringify(requests)
+  );
+
+  localStorage.setItem(
+    'cirrusHistorial',
+    JSON.stringify(historialSolicitudes)
+  );
+
+  renderRequests();
+
+}
+
+function renderHistorial(){
+
+  historialSolicitudes =
+    JSON.parse(localStorage.getItem('cirrusHistorial')) || [];
+
+  const container =
+    document.getElementById('historial-container');
+
+  container.innerHTML='';
+
+  const historialUsuario =
+    historialSolicitudes.filter(item =>
+      item.usuario === usuarioActual
+    );
+
+  if(historialUsuario.length === 0){
+
+    container.innerHTML = `
+      <p class="text-slate-400 text-sm">
+        No hay solicitudes todavía
+      </p>
+    `;
+
+    return;
+
+  }
+
+  historialUsuario.forEach((item,index)=>{
+
+    container.innerHTML += `
+
+      <div class="border border-slate-200 rounded-2xl p-5 bg-white shadow-sm">
+
+        <div class="flex items-center justify-between mb-4">
+
+          <h3 class="font-black text-[#082545] text-lg">
+            Solicitud #${index + 1}
+          </h3>
+
+          <span class="
+            ${
+              item.estado === 'Aprobada'
+              ?
+              'bg-emerald-100 text-emerald-700'
+              :
+              item.estado === 'Denegada'
+              ?
+              'bg-red-100 text-red-700'
+              :
+              'bg-yellow-100 text-yellow-700'
+            }
+            px-4 py-2 rounded-xl text-xs font-bold uppercase
+          ">
+
+            ${
+              item.estado === 'Aprobada'
+              ?
+              '✅ APROBADA'
+              :
+              item.estado === 'Denegada'
+              ?
+              '❌ DENEGADA'
+              :
+              '⏳ PENDIENTE'
+            }
+
+          </span>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Empresa logística
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${item.empresa}
+            </p>
+
+          </div>
+
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Aduana
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${item.aduana}
+            </p>
+
+          </div>
+
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Transporte
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${item.transporte}
+            </p>
+
+          </div>
+
+          <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100">
+
+            <p class="text-xs uppercase text-slate-400 font-bold mb-2">
+              Usuario
+            </p>
+
+            <p class="text-sm font-semibold text-slate-700">
+              ${item.usuario}
+            </p>
+
+          </div>
+
+        </div>
+
+        ${
+          item.comentario
+          ?
+          `
+          <div class="mt-5 bg-blue-50 border border-blue-100 rounded-2xl p-4">
+
+            <p class="text-xs uppercase text-blue-400 font-bold mb-2">
+              Comentario del Administrador
+            </p>
+
+            <p class="text-sm text-slate-700 leading-relaxed">
+              ${item.comentario}
+            </p>
+
+          </div>
+          `
+          :
+          ''
+        }
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+function toggleMenu(id){
+
+const menu = document.getElementById(id);
+
+menu.classList.toggle('hidden');
+
+}
+
+function guardarComentario(index){
+
+  const comentario =
+    document.getElementById(`comentario-${index}`).value;
+
+  requests[index].comentario = comentario;
+
+  historialSolicitudes =
+    historialSolicitudes.map(item => {
+
+      if(
+        item.usuario === requests[index].usuario
+        &&
+        item.empresa === requests[index].empresa
+        &&
+        item.aduana === requests[index].aduana
+        &&
+        item.transporte === requests[index].transporte
+      ){
+
+        item.comentario = comentario;
+
+      }
+
+      return item;
+
+    });
+
+  localStorage.setItem(
+    'cirrusRequests',
+    JSON.stringify(requests)
+  );
+
+  localStorage.setItem(
+    'cirrusHistorial',
+    JSON.stringify(historialSolicitudes)
+  );
+
+  alert('Comentario guardado');
+
+}
+
+function eliminarSolicitud(index){
+
+  const solicitud = requests[index];
+
+  requests.splice(index,1);
+
+  historialSolicitudes =
+    historialSolicitudes.filter(item => {
+
+      return !(
+        item.usuario === solicitud.usuario
+        &&
+        item.empresa === solicitud.empresa
+        &&
+        item.aduana === solicitud.aduana
+        &&
+        item.transporte === solicitud.transporte
+      );
+
+    });
+
+  localStorage.setItem(
+    'cirrusRequests',
+    JSON.stringify(requests)
+  );
+
+  localStorage.setItem(
+    'cirrusHistorial',
+    JSON.stringify(historialSolicitudes)
+  );
+
+  alert('Solicitud eliminada');
+
+  renderRequests();
+
+}
+
+function cerrarSesion(){
+
+localStorage.removeItem(
+'cirrusSession'
+);
+
+localStorage.removeItem(
+'cirrusAdmin'
+);
+
+location.reload();
+
+}
+
+</script>
+</body>
+</html>
