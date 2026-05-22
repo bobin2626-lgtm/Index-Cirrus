@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIRRUS Logistics Network - Asistente Consultor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy: '#082545',
+        blue: '#134074',
+        light: '#EEF4F8',
+        purple: '#5B2C6F',
+        green: '#1E8449',
+        accent: '#00B4D8'
+      },
+      animation: {
+        'logo-entrance': 'logoEntrance 1.8s cubic-bezier(0.25, 1, 0.5, 1) forwards',
+        'fade-out': 'fadeOut 0.5s ease forwards',
+        'pulse-soft': 'pulseSoft 2s infinite',
+        'modal-entrance': 'modalEntrance 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards'
+      },
+      keyframes: {
+        logoEntrance: {
+          '0%': { transform: 'scale(0.5) translateY(30px) rotate(-4deg)', opacity: '0', filter: 'blur(12px)' },
+          '50%': { transform: 'scale(1.04) translateY(-5px) rotate(2deg)', opacity: '0.9', filter: 'blur(0px)' },
+          '100%': { transform: 'scale(1) translateY(0) rotate(0deg)', opacity: '1', filter: 'blur(0px)' }
+        },
+        fadeOut: {
+          '0%': { opacity: '1', visibility: 'visible' },
+          '100%': { opacity: '0', visibility: 'hidden' }
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' }
+        },
+        modalEntrance: {
+          '0%': { transform: 'scale(0.9) translateY(20px)', opacity: '0' },
+          '100%': { transform: 'scale(1) translateY(0)', opacity: '1' }
+        }
+      }
+    }
+  }
+}
+</script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f1f5f9;
+}
+.hidden-tab {
+  display: none;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 20px;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #F1F5F9;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #134074;
+  border-radius: 8px;
+}
+</style>
+</head>
+
+<body class="min-h-screen text-slate-800 overflow-x-hidden custom-scrollbar" id="main-body">
+
+<div id="decision-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[150] hidden flex items-center justify-center p-4">
+  <div id="decision-modal-card" class="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6 text-center border border-slate-100 animate-modal-entrance relative overflow-hidden">
+    <div id="modal-top-bar" class="absolute top-0 left-0 right-0 h-2"></div>
+    
+    <button onclick="cerrarDecisionModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
+      <i class="fa-solid fa-xmark text-sm"></i>
+    </button>
+
+    <div class="mt-3 flex justify-center">
+      <div id="modal-icon-container" class="w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-inner">
+        <i id="modal-icon"></i>
+      </div>
+    </div>
+
+    <div class="mt-4 space-y-1.5">
+      <h3 id="modal-title" class="font-black text-lg uppercase tracking-wide"></h3>
+      <p id="modal-message" class="text-xs text-slate-500 leading-relaxed px-2"></p>
+    </div>
+
+    <div class="mt-5">
+      <button onclick="cerrarDecisionModal()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2 rounded-xl text-xs uppercase tracking-wider transition-all w-full">
+        Entendido
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="profile-inspector-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[140] hidden flex items-center justify-center p-4">
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden border border-slate-100 animate-modal-entrance">
+    <div class="bg-[#082545] p-6 text-white flex justify-between items-center">
+      <h3 class="font-black text-xs uppercase tracking-widest text-[#00B4D8]">Inspección de Credenciales</h3>
+      <button onclick="cerrarInspectorModal()" class="text-slate-400 hover:text-white transition-colors">
+        <i class="fa-solid fa-xmark text-base"></i>
+      </button>
+    </div>
+    <div class="p-6 space-y-6 text-center">
+      <div class="flex justify-center">
+        <div id="inspected-avatar" class="w-24 h-24 rounded-full bg-[#134074] text-white flex items-center justify-center text-3xl font-bold shadow-md border-4 border-slate-100 bg-cover bg-center">
+          U
+        </div>
+      </div>
+      <div class="space-y-1">
+        <h4 id="inspected-name" class="font-black text-lg text-[#082545]"></h4>
+        <p id="inspected-company" class="text-xs text-slate-400 font-semibold uppercase tracking-wider"></p>
+      </div>
+      <div class="grid grid-cols-1 gap-2.5 text-left text-xs border-t pt-4">
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+          <span class="block text-[10px] uppercase font-bold text-slate-400">RIF / ID Fiscal</span>
+          <span id="inspected-rif" class="font-mono text-slate-700 font-bold"></span>
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+          <span class="block text-[10px] uppercase font-bold text-slate-400">Correo Electrónico</span>
+          <span id="inspected-email" class="text-slate-700 font-medium"></span>
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+          <span class="block text-[10px] uppercase font-bold text-slate-400">Teléfono Corporativo</span>
+          <span id="inspected-phone" class="font-mono text-slate-700"></span>
+        </div>
+        <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+          <span class="block text-[10px] uppercase font-bold text-slate-400">Rango en la Red</span>
+          <span id="inspected-role" class="font-bold text-purple-600"></span>
+        </div>
+      </div>
+    </div>
+    <div class="p-4 bg-slate-50 border-t flex gap-2">
+      <div id="inspector-action-area" class="w-full"></div>
+      <button onclick="cerrarInspectorModal()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 rounded-xl text-xs uppercase tracking-wider transition-all">
+        Cerrar Vista
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="splash-screen" class="fixed inset-0 bg-[#082545] z-[100] flex flex-col items-center justify-center p-4 transition-all duration-1000">
+  <div class="text-center space-y-6">
+    <div class="bg-white p-6 rounded-[2rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] inline-block max-w-[240px] animate-logo-entrance">
+      <img src="Cirrus.png" alt="Cirrus Logo" class="h-24 w-auto object-contain mx-auto" id="splash-logo">
+    </div>
+    <div class="space-y-2">
+      <h2 class="text-white font-black text-4xl tracking-[0.25em] font-mono">CIRRUS</h2>
+      <p class="text-[#00B4D8] text-xs font-mono uppercase tracking-[0.3em] animate-pulse-soft">Sincronizando Red Logística...</p>
+    </div>
+  </div>
+</div>
+
+<div id="auth-screen" class="fixed inset-0 bg-gradient-to-tr from-[#082545] via-[#134074] to-[#5B2C6F] z-[90] flex items-center justify-center p-4 overflow-y-auto">
+  <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden my-auto border border-slate-100/80">
+    <div class="bg-[#082545] p-8 text-center space-y-3 relative overflow-hidden">
+      <h3 id="auth-title" class="text-white font-bold text-2xl tracking-tight">Iniciar Sesión</h3>
+      <p id="auth-desc" class="text-slate-300 text-xs tracking-wide">Accede al Ecosistema Consultor de Carga</p>
+    </div>
+    
+    <form id="form-login" onsubmit="handleLogin(event)" class="p-8 space-y-4">
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Correo Electrónico</label>
+        <input type="email" id="login-correo" required placeholder="nombre@empresa.com" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B4D8] bg-slate-50 transition-all">
+      </div>
+      <div>
+        <div class="flex justify-between items-center mb-1.5">
+          <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider">Contraseña</label>
+          <button type="button" onclick="changeAuthViewState('recuperar')" class="text-xs text-[#00B4D8] font-semibold hover:underline">¿Olvidaste tu contraseña?</button>
+        </div>
+        <input type="password" id="login-pass" required placeholder="••••••••" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B4D8] bg-slate-50 transition-all">
+      </div>
+      <button type="submit" class="w-full bg-[#00B4D8] hover:bg-[#009bb8] text-white font-bold py-3.5 rounded-xl transition-all text-sm uppercase tracking-wider shadow-lg shadow-[#00B4D8]/20">
+        Entrar a la Red
+      </button>
+      <p class="text-center text-xs text-slate-500 pt-2">
+        ¿No tienes una cuenta corporativa? <button type="button" onclick="changeAuthViewState('registro')" class="text-[#00B4D8] font-bold hover:underline">Regístrate aquí</button>
+      </p>
+    </form>
+
+    <form id="form-registro" onsubmit="handleRegistro(event)" class="p-6 space-y-3 hidden">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Nombre y Apellido</label>
+          <input type="text" id="reg-usuario" required placeholder="Ej. Ángel Díaz" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Empresa / Razón Social</label>
+          <input type="text" id="reg-empresa" required placeholder="Logística Global" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50">
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">RIF / ID Fiscal</label>
+          <input type="text" id="reg-rif" required placeholder="J-12345678-0" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50 font-mono">
+        </div>
+        <div>
+          <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Teléfono Móvil</label>
+          <input type="tel" id="reg-telefono" required placeholder="04125555555" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50 font-mono">
+        </div>
+      </div>
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Correo Corporativo</label>
+        <input type="email" id="reg-correo" required placeholder="corporativo@empresa.com" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50">
+      </div>
+      <div>
+        <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Contraseña de Acceso</label>
+        <input type="password" id="reg-pass" required placeholder="••••••••" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50">
+      </div>
+      <button type="submit" class="w-full bg-[#1E8449] hover:bg-[#196F3D] text-white font-bold py-2.5 rounded-xl transition-all text-xs uppercase tracking-wider">
+        Crear Cuenta de Aliado
+      </button>
+      <p class="text-center text-xs text-slate-500 pt-1">
+        ¿Ya eres miembro? <button type="button" onclick="changeAuthViewState('login')" class="text-[#00B4D8] font-bold hover:underline">Inicia sesión</button>
+      </p>
+    </form>
+
+    <form id="form-recuperar" onsubmit="handleRecuperar(event)" class="p-8 space-y-4 hidden">
+      <p class="text-xs text-slate-500 leading-relaxed">Ingresa tu correo electrónico registrado. Te enviaremos las directrices de restablecimiento para tu cuenta.</p>
+      <div>
+        <label class="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Correo de Recuperación</label>
+        <input type="email" id="rec-correo" required placeholder="tu-correo@empresa.com" class="w-full border border-slate-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-[#00B4D8] bg-slate-50">
+      </div>
+      <button type="submit" class="w-full bg-[#5B2C6F] hover:bg-[#4a235a] text-white font-bold py-3.5 rounded-xl transition-all text-sm uppercase tracking-wider">
+        Enviar Código de Reinicio
+      </button>
+      <button type="button" onclick="changeAuthViewState('login')" class="w-full border border-slate-200 text-slate-600 font-bold py-3 rounded-xl hover:bg-slate-50 text-xs uppercase tracking-wider">
+        Volver al Login
+      </button>
+    </form>
+  </div>
+</div>
+
+<div id="app-interface" class="hidden min-h-screen flex flex-col md:flex-row">
+  
+  <aside class="w-full md:w-64 bg-[#082545] text-white flex flex-col shrink-0 shadow-xl border-r border-slate-800">
+    <div class="p-6 border-b border-slate-800 flex items-center space-x-3 justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 bg-white rounded-xl flex items-center justify-center p-1.5 shadow-md">
+          <img src="Cirrus.png" alt="Cirrus Logo" class="w-full h-full object-contain">
+        </div>
+        <div>
+          <h2 class="font-black text-lg tracking-wider leading-none">CIRRUS</h2>
+          <span class="text-[9px] uppercase font-bold text-[#00B4D8] tracking-widest">Asistente Logístico</span>
+        </div>
+      </div>
+      <button onclick="logout()" class="md:hidden text-slate-400 hover:text-rose-400 p-2 text-lg">
+        <i class="fa-solid fa-power-off"></i>
+      </button>
+    </div>
+
+    <div class="p-4 bg-[#134074]/40 border-b border-slate-800 flex items-center space-x-3">
+      <div class="relative group">
+        <div class="w-11 h-11 rounded-full bg-[#00B4D8] text-white flex items-center justify-center font-bold text-sm shadow-inner overflow-hidden bg-cover bg-center" id="user-avatar">
+          U
+        </div>
+        <label class="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-[10px]">
+          <i class="fa-solid fa-camera text-white"></i>
+          <input type="file" id="user-avatar-input" accept="image/*" class="hidden" onchange="procesarFotoPerfil(event)">
+        </label>
+      </div>
+      <div class="overflow-hidden flex-1">
+        <p class="font-bold text-xs text-white truncate" id="user-display-name">Usuario Corporativo</p>
+        <p class="text-[10px] text-slate-400 truncate" id="user-display-company">Empresa Aliada</p>
+      </div>
+    </div>
+
+    <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto sidebar-scroll">
+      <button onclick="switchTab('marketplace')" id="btn-tab-marketplace" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#00B4D8] text-white shadow-md">
+        <i class="fa-solid fa-rectangle-list text-sm w-5 text-center"></i>
+        <span>Directorio Aliados</span>
+      </button>
+
+      <button onclick="switchTab('cadena')" id="btn-tab-cadena" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white">
+        <i class="fa-solid fa-route text-sm w-5 text-center"></i>
+        <span>Cadena Logística</span>
+      </button>
+
+      <button onclick="switchTab('historial')" id="btn-tab-historial" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white">
+        <i class="fa-solid fa-clock-rotate-left text-sm w-5 text-center"></i>
+        <span>Historial Rutas</span>
+      </button>
+
+      <button onclick="switchTab('mi-perfil')" id="btn-tab-mi-perfil" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white">
+        <i class="fa-solid fa-id-card text-sm w-5 text-center"></i>
+        <span>Mi Perfil</span>
+      </button>
+
+      <button onclick="recargarPagina()" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all border border-dashed border-slate-700 text-amber-400 hover:bg-slate-800/60 hover:text-amber-300 mt-2">
+        <i class="fa-solid fa-rotate text-sm w-5 text-center animate-[spin_4s_linear_infinite]"></i>
+        <span>Recargar Sistema</span>
+      </button>
+
+      <div id="admin-menu-section" class="hidden pt-4 border-t border-slate-800 space-y-1.5">
+        <span class="block px-4 text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1">Módulo Interno Privado</span>
+        
+        <button onclick="switchTab('admin-panel')" id="btn-tab-admin-panel" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white">
+          <i class="fa-solid fa-bell text-sm w-5 text-center"></i>
+          <span>Solicitudes Nuevas</span>
+        </button>
+
+        <button onclick="switchTab('admin-history')" id="btn-tab-admin-history" class="w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white">
+          <i class="fa-solid fa-box-archive text-sm w-5 text-center"></i>
+          <span>Veredictos / Historial</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="p-4 border-t border-slate-800 bg-[#061c35]">
+      <a href="https://wa.me/584162409426" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all shadow-sm group">
+        <div class="flex items-center space-x-2.5">
+          <i class="fa-brands fa-whatsapp text-base text-emerald-500 group-hover:text-white transition-colors"></i>
+          <span class="text-[10px]">Soporte Técnico</span>
+        </div>
+        <i class="fa-solid fa-arrow-up-right-from-square text-[9px] opacity-60"></i>
+      </a>
+    </div>
+
+    <div class="p-4 border-t border-slate-800 hidden md:block">
+      <button onclick="logout()" class="w-full flex items-center justify-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-slate-700 text-slate-400 hover:border-rose-500 hover:text-rose-400 transition-all">
+        <i class="fa-solid fa-power-off text-xs"></i>
+        <span>Cerrar Sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+    <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm">
+      <h2 id="current-tab-title" class="text-base font-black text-[#082545] uppercase tracking-wide">Directorio Aliados</h2>
+      <span class="text-[10px] bg-emerald-50 text-emerald-600 font-bold px-2.5 py-1 rounded-full border border-emerald-200/60 uppercase flex items-center space-x-1">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
+        <span>Ecosistema Conectado</span>
+      </span>
+    </header>
+
+    <main class="flex-1 p-4 md:p-6 max-w-7xl w-full mx-auto space-y-6">
+      
+      <section id="tab-marketplace" class="space-y-6">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+          <button onclick="filtrarCatalogo('navieras')" id="btn-cat-navieras" class="bg-white border-2 border-[#00B4D8] rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm">
+            <div class="w-12 h-12 rounded-xl bg-[#00B4D8]/10 text-[#00B4D8] flex items-center justify-center text-xl">
+              <i class="fa-solid fa-ship"></i>
+            </div>
+            <div>
+              <p class="font-black text-xs uppercase tracking-wide text-slate-800">Navieras</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+            </div>
+          </button>
+
+          <button onclick="filtrarCatalogo('aerolineas')" id="btn-cat-aerolineas" class="bg-white border-2 border-transparent hover:border-slate-300 rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm">
+            <div class="w-12 h-12 rounded-xl bg-[#134074]/10 text-[#134074] flex items-center justify-center text-xl">
+              <i class="fa-solid fa-plane"></i>
+            </div>
+            <div>
+              <p class="font-black text-xs uppercase tracking-wide text-slate-800">Aerolíneas</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+            </div>
+          </button>
+
+          <button onclick="filtrarCatalogo('aduanales')" id="btn-cat-aduanales" class="bg-white border-2 border-transparent hover:border-slate-300 rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm">
+            <div class="w-12 h-12 rounded-xl bg-[#5B2C6F]/10 text-[#5B2C6F] flex items-center justify-center text-xl">
+              <i class="fa-solid fa-passport"></i>
+            </div>
+            <div>
+              <p class="font-black text-xs uppercase tracking-wide text-slate-800">Aduanales</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+            </div>
+          </button>
+
+          <button onclick="filtrarCatalogo('transporte')" id="btn-cat-transporte" class="bg-white border-2 border-transparent hover:border-slate-300 rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm">
+            <div class="w-12 h-12 rounded-xl bg-[#1E8449]/10 text-[#1E8449] flex items-center justify-center text-xl">
+              <i class="fa-solid fa-truck"></i>
+            </div>
+            <div>
+              <p class="font-black text-xs uppercase tracking-wide text-slate-800">Transporte</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+            </div>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+          <div>
+            <h3 class="text-sm font-black text-[#082545] uppercase tracking-wider" id="marketplace-category-title">Operadores Navieros Asociados</h3>
+            <p class="text-[11px] text-slate-400">Análisis técnico y estructural de operadores disponibles</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="marketplace-grid"></div>
+      </section>
+
+      <section id="tab-cadena" class="hidden-tab space-y-6">
+        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-6">
+          <div>
+            <h3 class="text-sm font-black text-[#082545] uppercase tracking-wider">Estructurar Cadena de Distribución</h3>
+            <p class="text-[11px] text-slate-400">Combina los operadores calificados de la red para estructurar tu ruta comercial</p>
+          </div>
+
+          <form id="form-cadena" onsubmit="procesarNuevaCadena(event)" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">1. Operador de Tránsito Internacional</label>
+                <select id="cadena-select-principal" required class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:border-[#00B4D8] outline-none">
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">2. Agencia Aduanal Certificada</label>
+                <select id="cadena-select-aduana" required class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:border-[#00B4D8] outline-none">
+                </select>
+              </div>
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">3. Transporte de Distribución Terrestre</label>
+                <select id="cadena-select-transporte" required class="w-full border border-slate-200 rounded-xl px-3 py-2.5 text-xs bg-slate-50 focus:border-[#00B4D8] outline-none">
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
+              <div>
+                <label class="block text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1.5">Descripción Completa de la Mercancía</label>
+                <textarea id="cadena-detalle-carga" required placeholder="Especificar peso total, tipo de carga (general, peligrosa, refrigerada), volumen y requerimientos especiales..." class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50 focus:border-[#00B4D8] h-24 resize-none outline-none"></textarea>
+              </div>
+              <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex flex-col justify-between">
+                <p class="text-[11px] text-slate-500 leading-relaxed">Este módulo analiza la compatibilidad operativa de los agentes seleccionados. Al confirmar la estructura, se registrará una propuesta en tu historial para la evaluación técnica individual por parte del Administrador del Sistema.</p>
+                <button type="submit" class="w-full bg-[#134074] hover:bg-[#082545] text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all mt-4">
+                  Confirmar Estructura Logística
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section id="tab-historial" class="hidden-tab space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h3 class="text-sm font-black text-[#082545] uppercase tracking-wider">Historial de Cadenas Logísticas</h3>
+              <p class="text-[11px] text-slate-400">Estado global y veredictos de las combinaciones procesadas e individuales de la red</p>
+            </div>
+            <div>
+              <button onclick="borrarTodoElHistorial()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-[10px] uppercase tracking-wider transition-all shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-dumpster text-xs"></i> Borrar Todo el Historial
+              </button>
+            </div>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs min-w-[600px]">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-slate-500 font-bold uppercase tracking-wider text-[10px]">
+                  <th class="p-4">Aliado / Empresa</th>
+                  <th class="p-4">Tránsito</th>
+                  <th class="p-4">Aduana / Distribución</th>
+                  <th class="p-4">Especificación Mercancía</th>
+                  <th class="p-4 text-center">Historial y Dictamen</th>
+                  <th class="p-4 text-center w-[80px]">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="historial-table-body">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-mi-perfil" class="hidden-tab max-w-2xl mx-auto">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          <div class="bg-[#082545] p-8 text-center text-white space-y-4 relative">
+            <div class="flex justify-center">
+              <div class="relative group inline-block">
+                <div id="my-profile-image" class="w-28 h-28 rounded-full bg-[#00B4D8] text-white flex items-center justify-center text-4xl font-black shadow-xl border-4 border-white/20 bg-cover bg-center">
+                  U
+                </div>
+                <label class="absolute inset-0 bg-black/60 rounded-full flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-xs space-y-1 font-bold">
+                  <i class="fa-solid fa-camera text-base"></i>
+                  <span>Cambiar</span>
+                  <input type="file" accept="image/*" class="hidden" onchange="procesarFotoPerfil(event)">
+                </label>
+              </div>
+            </div>
+            <div>
+              <h3 id="my-profile-name" class="font-black text-xl tracking-wide"></h3>
+              <p id="my-profile-company" class="text-xs uppercase font-bold text-[#00B4D8] tracking-widest mt-1"></p>
+            </div>
+          </div>
+          <div class="p-6 space-y-4">
+            <h4 class="text-xs font-black uppercase text-slate-400 tracking-wider border-b pb-2">Credenciales Completas Registradas</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                <span class="block text-[10px] text-slate-400 uppercase font-black">Correo de Contacto</span>
+                <span id="my-profile-email" class="text-xs text-slate-700 font-medium"></span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                <span class="block text-[10px] text-slate-400 uppercase font-black">Registro RIF</span>
+                <span id="my-profile-rif" class="text-xs font-mono text-slate-700 font-bold"></span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                <span class="block text-[10px] text-slate-400 uppercase font-black">Línea Telefónica</span>
+                <span id="my-profile-phone" class="text-xs font-mono text-slate-700"></span>
+              </div>
+              <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+                <span class="block text-[10px] text-slate-400 uppercase font-black">Jerarquía Operativa</span>
+                <span id="my-profile-role" class="text-xs font-bold text-purple-600 uppercase"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-admin-panel" class="hidden-tab space-y-6">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6 lg:col-span-2 space-y-4">
+            <div>
+              <h3 class="text-sm font-black text-amber-600 uppercase tracking-wider flex items-center gap-2">
+                <i class="fa-solid fa-circle-exclamation"></i> Solicitudes Nuevas Entrantes
+              </h3>
+              <p class="text-[11px] text-slate-400">Cargas y estructuras que esperan por tu evaluación técnica inmediata.</p>
+            </div>
+            <div id="admin-requests-list" class="space-y-3"></div>
+          </div>
+          <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6 space-y-4">
+            <div>
+              <h3 class="text-sm font-black text-[#082545] uppercase tracking-wider">Control de Usuarios Aliados</h3>
+              <p class="text-[11px] text-slate-400">Inspecciona credenciales completas o remueve accesos</p>
+            </div>
+            <div id="admin-users-list" class="space-y-3 max-h-[400px] overflow-y-auto sidebar-scroll"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="tab-admin-history" class="hidden-tab space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6 space-y-4">
+          <div>
+            <h3 class="text-sm font-black text-indigo-900 uppercase tracking-wider flex items-center gap-2">
+              <i class="fa-solid fa-box-archive"></i> Historial de Solicitudes Procesadas
+            </h3>
+            <p class="text-[11px] text-slate-400">Registro histórico permanente de todas las solicitudes archivadas como Aprobadas o Denegadas.</p>
+          </div>
+          <div id="admin-processed-history-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div id="cirrus-ai-widget" class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+  <div id="cirrus-ai-window" class="hidden w-80 md:w-96 h-[400px] bg-white rounded-2xl shadow-2xl border border-slate-200 flex flex-col overflow-hidden mb-3 transition-all duration-300 transform scale-95 origin-bottom-right opacity-0">
+    <div class="bg-[#082545] p-4 text-white flex items-center justify-between">
+      <div class="flex items-center space-x-2.5">
+        <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center border border-white/20 text-[#00B4D8]">
+          <i class="fa-solid fa-robot text-sm"></i>
+        </div>
+        <div>
+          <h4 class="font-black text-xs uppercase tracking-wider">Cirrus AI</h4>
+          <span class="text-[9px] text-emerald-400 font-bold flex items-center gap-1">Asistente Consultor Logístico</span>
+        </div>
+      </div>
+      <button onclick="toggleCirrusAI()" class="text-slate-400 hover:text-white text-sm"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div id="cirrus-ai-messages" class="flex-1 p-4 overflow-y-auto space-y-3 bg-slate-50 text-xs custom-scrollbar">
+      <div class="flex items-start space-x-2">
+        <div class="w-7 h-7 rounded-lg bg-[#082545] text-white flex items-center justify-center text-[10px] shrink-0"><i class="fa-solid fa-robot"></i></div>
+        <div class="bg-white border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-sm text-slate-700">
+          Saludos. Soy el asistente técnico de <strong>CIRRUS</strong>. Indícame qué mercancía deseas movilizar para orientarte sobre los operadores óptimos.
+        </div>
+      </div>
+    </div>
+    <form onsubmit="handleCirrusAISubmit(event)" class="p-3 border-t border-slate-200 bg-white flex items-center gap-2">
+      <input type="text" id="cirrus-ai-input" placeholder="Escribe tu consulta de enrutamiento..." autocomplete="off" class="flex-1 border border-slate-200 bg-slate-50 rounded-xl px-3.5 py-2 text-xs outline-none focus:border-[#00B4D8]">
+      <button type="submit" class="bg-[#00B4D8] text-white w-8 h-8 rounded-xl flex items-center justify-center shadow-sm hover:bg-[#009bb8] transition-colors shrink-0">
+        <i class="fa-solid fa-paper-plane text-xs"></i>
+      </button>
+    </form>
+  </div>
+
+  <button onclick="toggleCirrusAI()" class="bg-[#082545] hover:bg-[#134074] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-105 active:scale-95 border-2 border-slate-700/50">
+    <i class="fa-solid fa-comments text-xl"></i>
+  </button>
+</div>
+
+<script>
+// BASE DE DATOS MOCK ORIGINAL EN LOCALSTORAGE
+const defaultOperadores = [
+  { id: "op-1", categoria: "navieras", nombre: "Hapag-Lloyd Venezuela", empresa: "Hapag-Lloyd AG", RIF: "J-00032415-1", correo: "caracas@hapag-lloyd.com", telefono: "02129514211", metricas: "Frecuencia Semanal • Hub Puerto Cabello • Conexión de Carga Consolidada y de un solo consignatario (FCL/LCL)" },
+  { id: "op-2", categoria: "navieras", nombre: "Maersk Line Venezuela", empresa: "Maersk Caribbean", RIF: "J-00124578-2", correo: "ops@maersk.com", telefono: "02129056111", metricas: "Rutados directos hacia Panamá y Manzanillo • Alta disponibilidad de contenedores refrigerados para cadena de frío" },
+  { id: "op-3", categoria: "aerolineas", nombre: "Lufthansa Cargo Caracas", empresa: "Lufthansa Cargo AG", RIF: "J-00085412-9", correo: "ccs.cargo@lufthansa.com", telefono: "02123551211", metricas: "Tránsitos優先 de 48-72 horas hacia Europa Central • Manejo certificado de mercancías peligrosas y farmacéuticas" },
+  { id: "op-4", categoria: "aerolineas", nombre: "Avianca Cargo", empresa: "Tampa Cargo S.A.S.", RIF: "J-30145269-0", correo: "sales.ccs@aviancacargo.com", telefono: "02123552455", metricas: "Estructura logística dedicada a conexiones en las Américas • Frecuencias diarias saliendo desde Maiquetía" },
+  { id: "op-5", categoria: "aduanales", nombre: "Aduanas Taurel", empresa: "Taurel & Cia Sucrs", RIF: "J-00018452-0", correo: "import@taurel.com", telefono: "02125642211", metricas: "Asesoría aduanal con más de 100 años en el país • Corresponsalías activas en las principales aduanas marítimas y aéreas" },
+  { id: "op-6", categoria: "aduanales", nombre: "Aduamerica", empresa: "Corporación Aduamerica C.A.", RIF: "J-31054789-1", correo: "contacto@aduamerica.com", telefono: "02423641152", metricas: "Especialistas en regímenes aduaneros especiales y nacionalización expedita en Puerto Cabello" },
+  { id: "op-7", categoria: "transporte", nombre: "Cotransa", empresa: "Complejo de Transporte S.A.", RIF: "J-00254169-8", correo: "despacho@cotransa.com", telefono: "02418745522", metricas: "Flota propia de chutos con sistemas de posicionamiento global satelital • Permisologías de transporte pesado" },
+  { id: "op-8", categoria: "transporte", nombre: "Transportes Free Ways", empresa: "Free Ways C.A.", RIF: "J-30589641-2", correo: "logistica@freeways.com", telefono: "02432451122", metricas: "Estructuras de distribución express local e interurbana • Unidades furgonadas de resguardo técnico" }
+];
+
+const defaultUsuarios = [
+  { usuario: "Ángel Díaz", empresa: "Logística Global Marítima", correo: "adiaz@loglobal.com", rif: "J-40521463-0", telefono: "04241524632", rol: "Aliado Comercial", fotoPerfil: "" },
+  { usuario: "Beatriz Mendoza", empresa: "Aduanas del Centro", correo: "bmendoza@aducentro.com", rif: "J-31254698-2", telefono: "04126325412", rol: "Aliado Comercial", fotoPerfil: "" },
+  { usuario: "Carlos Rodríguez", empresa: "Distribución Express C.A.", correo: "crodriguez@distexpress.com", rif: "J-29854123-5", telefono: "04147895236", rol: "Aliado Comercial", fotoPerfil: "" }
+];
+
+// INICIALIZACIÓN SEGURO DEL ALMACENAMIENTO LOCAL
+if (!localStorage.getItem("cirrus_operadores")) localStorage.setItem("cirrus_operadores", JSON.stringify(defaultOperadores));
+if (!localStorage.getItem("cirrus_usuarios")) localStorage.setItem("cirrus_usuarios", JSON.stringify(defaultUsuarios));
+if (!localStorage.getItem("cirrus_historial")) localStorage.setItem("cirrus_historial", JSON.stringify([]));
+
+let currentCategory = 'navieras';
+let currentUser = null;
+
+// GESTIÓN DE VISTAS DE AUTENTICACIÓN
+function changeAuthViewState(state) {
+  document.getElementById("form-login").classList.add("hidden");
+  document.getElementById("form-registro").classList.add("hidden");
+  document.getElementById("form-recuperar").classList.add("hidden");
+  
+  const title = document.getElementById("auth-title");
+  const desc = document.getElementById("auth-desc");
+
+  if(state === 'login') {
+    document.getElementById("form-login").classList.remove("hidden");
+    title.innerText = "Iniciar Sesión";
+    desc.innerText = "Accede al Ecosistema Consultor de Carga";
+  } else if(state === 'registro') {
+    document.getElementById("form-registro").classList.remove("hidden");
+    title.innerText = "Registro Corporativo";
+    desc.innerText = "Súmate a la Red Estratégica de Aliados";
+  } else if(state === 'recuperar') {
+    document.getElementById("form-recuperar").classList.remove("hidden");
+    title.innerText = "Restablecer Acceso";
+    desc.innerText = "Canal Seguro de Recuperación de Credenciales";
+  }
+}
+
+// LOGICA DE LOGEO CON SESIÓN DE ADMINISTRADOR CONFIGURADA
+function handleLogin(e) {
+  e.preventDefault();
+  const correo = document.getElementById("login-correo").value.trim();
+  const contrasena = document.getElementById("login-pass").value;
+
+  // COMPROBACIÓN ORIGINAL DE CREDENCIALES DEL ADMINISTRADOR
+  if (correo === "admin@cirrus.network" && contrasena === "admin123") {
+    currentUser = {
+      usuario: "Administrador del Sistema",
+      empresa: "CIRRUS Logistics Headquarters",
+      correo: "admin@cirrus.network",
+      rif: "G-20019426-0",
+      telefono: "04162409426",
+      rol: "Administrador",
+      fotoPerfil: ""
+    };
+    abrirSistemaInyectado(currentUser);
+    return;
+  }
+
+  // BUSQUEDA DE USUARIOS ALIADOS EN BASE DE DATOS MOCK
+  const usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios"));
+  const usuarioEncontrado = usuarios.find(u => u.correo.toLowerCase() === correo.toLowerCase());
+
+  if (usuarioEncontrado) {
+    currentUser = usuarioEncontrado;
+    abrirSistemaInyectado(currentUser);
+  } else {
+    mostrarDecisionModal("Error de Validación", "Las credenciales especificadas no corresponden a ningún aliado activo en la red.", "border-rose-500", "text-rose-500", "fa-solid fa-triangle-exclamation bg-rose-50 text-rose-500");
+  }
+}
+
+function handleRegistro(e) {
+  e.preventDefault();
+  const nuevoU = {
+    usuario: document.getElementById("reg-usuario").value.trim(),
+    empresa: document.getElementById("reg-empresa").value.trim(),
+    correo: document.getElementById("reg-correo").value.trim(),
+    rif: document.getElementById("reg-rif").value.trim(),
+    telefono: document.getElementById("reg-telefono").value.trim(),
+    rol: "Aliado Comercial",
+    fotoPerfil: ""
+  };
+
+  let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios"));
+  if(usuarios.some(u => u.correo.toLowerCase() === nuevoU.correo.toLowerCase())) {
+    mostrarDecisionModal("Registro Denegado", "El correo corporativo ya se encuentra enlazado a una cuenta de la red.", "border-amber-500", "text-amber-500", "fa-solid fa-triangle-exclamation bg-amber-50 text-amber-400");
+    return;
+  }
+
+  usuarios.push(nuevoU);
+  localStorage.setItem("cirrus_usuarios", JSON.stringify(usuarios));
+  currentUser = nuevoU;
+  
+  document.getElementById("form-registro").reset();
+  abrirSistemaInyectado(currentUser);
+}
+
+function handleRecuperar(e) {
+  e.preventDefault();
+  mostrarDecisionModal("Procedimiento Ejecutado", "Se han despachado los parámetros criptográficos de reinicio a tu buzón institucional.", "border-purple-500", "text-purple-500", "fa-solid fa-envelope-circle-check bg-purple-50 text-purple-600");
+  changeAuthViewState('login');
+  document.getElementById("form-recuperar").reset();
+}
+
+// INYECCIÓN DE PERFIL Y DESBLOQUEO DE INTERFAZ
+function abrirSistemaInyectado(user) {
+  document.getElementById('user-display-name').innerText = user.usuario;
+  document.getElementById('user-display-company').innerText = user.empresa;
+  
+  if(document.getElementById('my-profile-name')) {
+    document.getElementById('my-profile-name').innerText = user.usuario;
+    document.getElementById('my-profile-company').innerText = user.empresa;
+    document.getElementById('my-profile-email').innerText = user.correo;
+    document.getElementById('my-profile-rif').innerText = user.rif;
+    document.getElementById('my-profile-phone').innerText = user.telefono;
+    document.getElementById('my-profile-role').innerText = user.rol;
+  }
+
+  const avatarDiv = document.getElementById('user-avatar');
+  const profileImgDiv = document.getElementById('my-profile-image');
+  const letraInicial = user.usuario.charAt(0).toUpperCase();
+  
+  if (user.fotoPerfil) {
+    avatarDiv.style.backgroundImage = `url('${user.fotoPerfil}')`;
+    avatarDiv.innerText = "";
+    if(profileImgDiv) {
+      profileImgDiv.style.backgroundImage = `url('${user.fotoPerfil}')`;
+      profileImgDiv.innerText = "";
+    }
+  } else {
+    avatarDiv.style.backgroundImage = "none";
+    avatarDiv.innerText = letraInicial;
+    if(profileImgDiv) {
+      profileImgDiv.style.backgroundImage = "none";
+      profileImgDiv.innerText = letraInicial;
+    }
+  }
+
+  // VALIDACIÓN DE ROL PARA VISIBILIDAD DEL MÓDULO PRIVADO
+  const adminSection = document.getElementById("admin-menu-section");
+  if (user.rol === "Administrador") {
+    adminSection.classList.remove("hidden");
+  } else {
+    adminSection.classList.add("hidden");
+  }
+
+  document.getElementById("auth-screen").classList.add("hidden");
+  document.getElementById("app-interface").classList.remove("hidden");
+  
+  construirCatalogosYListas();
+  switchTab('marketplace');
+}
+
+// MANEJO DE FLUJO DE PESTAÑAS
+function switchTab(tabId) {
+  const tabs = ['marketplace', 'cadena', 'historial', 'mi-perfil', 'admin-panel', 'admin-history'];
+  tabs.forEach(t => {
+    const el = document.getElementById(`tab-${t}`);
+    if(el) el.classList.add("hidden-tab");
+    
+    const btn = document.getElementById(`btn-tab-${t}`);
+    if(btn) {
+      btn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white";
+    }
+  });
+
+  const activeTab = document.getElementById(`tab-${tabId}`);
+  if(activeTab) activeTab.classList.remove("hidden-tab");
+  
+  const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+  if(activeBtn) {
+    activeBtn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#00B4D8] text-white shadow-md";
+  }
+
+  const headerTitle = document.getElementById("current-tab-title");
+  if(tabId === 'marketplace') headerTitle.innerText = "Directorio Aliados";
+  if(tabId === 'cadena') headerTitle.innerText = "Estructurar Cadena";
+  if(tabId === 'historial') headerTitle.innerText = "Historial Rutas";
+  if(tabId === 'mi-perfil') headerTitle.innerText = "Mi Perfil Corporativo";
+  if(tabId === 'admin-panel') headerTitle.innerText = "Panel de Evaluación Técnica";
+  if(tabId === 'admin-history') headerTitle.innerText = "Archivo Central de Veredictos";
+}
+
+// RENDERIZADO DINÁMICO DE COMPONENTES
+function construirCatalogosYListas() {
+  filtrarCatalogo(currentCategory);
+  actualizarSelectsFormCadenas();
+  renderizarHistorialYModulosAdmin();
+}
+
+function filtrarCatalogo(cat) {
+  currentCategory = cat;
+  const cats = ['navieras', 'aerolineas', 'aduanales', 'transporte'];
+  cats.forEach(c => {
+    const btn = document.getElementById(`btn-cat-${c}`);
+    if(btn) {
+      if(c === cat) {
+        btn.className = "bg-white border-2 border-[#00B4D8] rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm";
+      } else {
+        btn.className = "bg-white border-2 border-transparent hover:border-slate-300 rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm";
+      }
+    }
+  });
+
+  const titleMap = {
+    'navieras': 'Operadores Navieros Asociados',
+    'aerolineas': 'Líneas Aéreas Aliadas',
+    'aduanales': 'Agencias Aduanales Certificadas',
+    'transporte': 'Unidades de Transporte Terrestre'
+  };
+  document.getElementById("marketplace-category-title").innerText = titleMap[cat] || "Operadores";
+
+  const ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
+  const filtrados = ops.filter(o => o.categoria === cat);
+  const grid = document.getElementById("marketplace-grid");
+  grid.innerHTML = "";
+
+  if(filtrados.length === 0) {
+    grid.innerHTML = `<div class="col-span-full bg-slate-50 border border-dashed rounded-2xl p-8 text-center text-xs text-slate-400 font-bold">Ningún operador configurado en esta categoría.</div>`;
+    return;
+  }
+
+  filtrados.forEach(o => {
+    const card = document.createElement("div");
+    card.className = "bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all";
+    card.innerHTML = `
+      <div class="space-y-3">
+        <div class="flex justify-between items-start">
+          <div>
+            <h4 class="font-black text-sm text-[#082545] tracking-wide leading-tight">${o.nombre}</h4>
+            <span class="text-[9px] text-slate-400 font-mono font-bold uppercase">${o.empresa} • ${o.RIF}</span>
+          </div>
+          ${currentUser.rol === "Administrador" ? `
+            <button onclick="eliminarOperador('${o.id}')" class="text-slate-300 hover:text-rose-600 transition-colors text-xs p-1">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          ` : ''}
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">${o.metricas}</p>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mt-4 text-[10px] pt-2 border-t border-slate-100">
+        <div class="truncate text-slate-400"><i class="fa-solid fa-envelope text-[#00B4D8] mr-1"></i>${o.correo}</div>
+        <div class="text-right font-mono text-slate-500"><i class="fa-solid fa-phone text-emerald-500 mr-1"></i>${o.telefono}</div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function actualizarSelectsFormCadenas() {
+  const ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
+  
+  const selectPrincipal = document.getElementById("cadena-select-principal");
+  const selectAduana = document.getElementById("cadena-select-aduana");
+  const selectTransporte = document.getElementById("cadena-select-transporte");
+
+  if(!selectPrincipal) return;
+
+  selectPrincipal.innerHTML = '<option value="" disabled selected>Selecciona operador de tránsito...</option>';
+  selectAduana.innerHTML = '<option value="" disabled selected>Selecciona agencia aduanal...</option>';
+  selectTransporte.innerHTML = '<option value="" disabled selected>Selecciona unidad terrestre...</option>';
+
+  ops.forEach(o => {
+    const option = `<option value="${o.nombre}">${o.nombre}</option>`;
+    if(o.categoria === 'navieras' || o.categoria === 'aerolineas') selectPrincipal.innerHTML += option;
+    if(o.categoria === 'aduanales') selectAduana.innerHTML += option;
+    if(o.categoria === 'transporte') selectTransporte.innerHTML += option;
+  });
+}
+
+function renderizarHistorialYModulosAdmin() {
+  const historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
+  const tableBody = document.getElementById("historial-table-body");
+  
+  const reqListAdmin = document.getElementById("admin-requests-list");
+  const historyListAdmin = document.getElementById("admin-processed-history-list");
+  const userListAdmin = document.getElementById("admin-users-list");
+
+  if(tableBody) tableBody.innerHTML = "";
+  if(reqListAdmin) reqListAdmin.innerHTML = "";
+  if(historyListAdmin) historyListAdmin.innerHTML = "";
+  if(userListAdmin) userListAdmin.innerHTML = "";
+
+  // VISUALIZACIÓN DEL HISTORIAL DE RUTAS PARA EL CLIENTE LOGUEADO
+  const historialFiltrado = currentUser.rol === "Administrador" ? historial : historial.filter(h => h.solicitante.correo === currentUser.correo);
+
+  if(tableBody) {
+    if(historialFiltrado.length === 0) {
+      tableBody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 font-bold bg-slate-50/50">Ninguna estructura registrada en el sistema histórico.</td></tr>`;
+    } else {
+      historialFiltrado.forEach(h => {
+        let statusBadge = "";
+        if(h.status === "Pendiente") statusBadge = `<span class="bg-amber-50 border border-amber-200 text-amber-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-spinner animate-spin mr-1"></i>Pendiente</span>`;
+        if(h.status === "Aprobado") statusBadge = `<span class="bg-emerald-50 border border-emerald-200 text-emerald-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-check-double mr-1"></i>Aprobado</span>`;
+        if(h.status === "Denegado") statusBadge = `<span class="bg-rose-50 border border-rose-200 text-rose-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-ban mr-1"></i>Denegado</span>`;
+
+        const tr = document.createElement("tr");
+        tr.className = "border-b border-slate-100 hover:bg-slate-50/80 transition-all";
+        tr.innerHTML = `
+          <td class="p-4">
+            <p class="font-bold text-[#082545] cursor-pointer hover:underline" onclick="abrirInspectorModal('${h.solicitante.correo}')"><i class="fa-solid fa-circle-user mr-1.5 text-slate-400"></i>${h.solicitante.usuario}</p>
+            <span class="text-[10px] text-slate-400 font-medium block">${h.solicitante.empresa}</span>
+          </td>
+          <td class="p-4 font-semibold text-slate-600">${h.principal}</td>
+          <td class="p-4 text-slate-500">
+            <div class="space-y-0.5">
+              <div><i class="fa-solid fa-passport text-[#5B2C6F] mr-1"></i>${h.aduana}</div>
+              <div><i class="fa-solid fa-truck text-[#1E8449] mr-1"></i>${h.transporte}</div>
+            </div>
+          </td>
+          <td class="p-4 text-slate-500 max-w-xs truncate" title="${h.detalles}">${h.detalles}</td>
+          <td class="p-4 text-center">${statusBadge}</td>
+          <td class="p-4 text-center">
+            <button onclick="eliminarRegistroHistorial('${h.id}')" class="text-slate-300 hover:text-rose-600 p-1 text-sm transition-colors">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+    }
+  }
+
+  // FLUJO OPERATIVO EXCLUSIVO DEL PANEL DE ADMINISTRACIÓN
+  if(currentUser.rol === "Administrador") {
+    // 1. Solicitudes Entrantes Técnicas
+    const pendientes = historial.filter(h => h.status === "Pendiente");
+    if(reqListAdmin) {
+      if(pendientes.length === 0) {
+        reqListAdmin.innerHTML = `<div class="bg-slate-50 border border-dashed rounded-xl p-6 text-center text-xs text-slate-400 font-bold">No existen solicitudes pendientes por evaluar.</div>`;
+      } else {
+        pendientes.forEach(p => {
+          const item = document.createElement("div");
+          item.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 shadow-inner";
+          item.innerHTML = `
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 border-b border-slate-200/60 pb-2">
+              <div>
+                <span class="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-mono font-black">${p.id}</span>
+                <p class="text-xs font-bold text-[#082545] mt-1">Aliado: <span class="underline cursor-pointer" onclick="abrirInspectorModal('${p.solicitante.correo}')">${p.solicitante.usuario}</span> (${p.solicitante.empresa})</p>
+              </div>
+              <div class="flex gap-1.5 shrink-0">
+                <button onclick="dictaminarSolicitud('${p.id}', 'Aprobado')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-sm"><i class="fa-solid fa-square-check mr-1"></i>Aprobar</button>
+                <button onclick="dictaminarSolicitud('${p.id}', 'Denegado')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-sm"><i class="fa-solid fa-square-xmark mr-1"></i>Denegar</button>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-[11px] font-semibold text-slate-600">
+              <div><span class="block text-[9px] text-slate-400 uppercase font-black">Ruta Internacional</span>${p.principal}</div>
+              <div><span class="block text-[9px] text-slate-400 uppercase font-black">Agente Aduanal</span>${p.aduana}</div>
+              <div><span class="block text-[9px] text-slate-400 uppercase font-black">Distribución</span>${p.transporte}</div>
+            </div>
+            <div class="text-[11px] bg-white p-2 rounded-lg border text-slate-500 leading-relaxed">
+              <span class="block text-[9px] text-slate-400 uppercase font-black mb-0.5">Descripción Técnica de Carga</span>
+              ${p.detalles}
+            </div>
+          `;
+          reqListAdmin.appendChild(item);
+        });
+      }
+    }
+
+    // 2. Historial de Veredictos Procesados
+    const procesados = historial.filter(h => h.status !== "Pendiente");
+    if(historyListAdmin) {
+      if(procesados.length === 0) {
+        historyListAdmin.innerHTML = `<div class="col-span-full bg-slate-50 border border-dashed rounded-xl p-6 text-center text-xs text-slate-400 font-bold">Ninguna solicitud evaluada en este ciclo operativo.</div>`;
+      } else {
+        procesados.forEach(pr => {
+          const card = document.createElement("div");
+          const esAprobado = pr.status === "Aprobado";
+          card.className = `bg-white border-l-4 ${esAprobado ? 'border-emerald-500' : 'border-rose-500'} rounded-xl border border-slate-200 p-4 space-y-2 shadow-sm`;
+          card.innerHTML = `
+            <div class="flex justify-between items-start">
+              <div>
+                <h5 class="font-bold text-xs text-slate-800">${pr.solicitante.usuario}</h5>
+                <span class="text-[9px] text-slate-400 font-medium">${pr.solicitante.empresa}</span>
+              </div>
+              <span class="${esAprobado ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">${pr.status}</span>
+            </div>
+            <p class="text-[10px] text-slate-500 truncate"><span class="font-bold">Estructura:</span> ${pr.principal} + ${pr.aduana} + ${pr.transporte}</p>
+            <div class="flex justify-between items-center text-[9px] pt-1 border-t text-slate-400">
+              <span class="font-mono">${pr.id}</span>
+              <button onclick="dictaminarSolicitud('${pr.id}', 'Pendiente')" class="text-[#00B4D8] font-bold hover:underline uppercase tracking-wide"><i class="fa-solid fa-arrow-rotate-left mr-1"></i>Reevaluar</button>
+            </div>
+          `;
+          historyListAdmin.appendChild(card);
+        });
+      }
+    }
+
+    // 3. Control de Usuarios Aliados de la Red
+    const usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
+    if(userListAdmin) {
+      usuarios.forEach(u => {
+        const item = document.createElement("div");
+        item.className = "bg-slate-50 border rounded-xl p-3 flex items-center justify-between gap-3 hover:bg-slate-100/70 transition-all";
+        item.innerHTML = `
+          <div class="overflow-hidden">
+            <p class="font-bold text-xs text-[#082545] truncate">${u.usuario}</p>
+            <span class="text-[10px] text-slate-400 block truncate uppercase tracking-tight">${u.empresa}</span>
+          </div>
+          <div class="flex gap-1 shrink-0">
+            <button onclick="abrirInspectorModal('${u.correo}')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm" title="Inspeccionar Credenciales"><i class="fa-solid fa-address-card"></i></button>
+            <button onclick="eliminarUsuarioAliado('${u.correo}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-rose-200 transition-all shadow-sm" title="Revocar Acceso"><i class="fa-solid fa-user-minus"></i></button>
+          </div>
+        `;
+        userListAdmin.appendChild(item);
+      });
+    }
+  }
+}
+
+// PROCESAMIENTO DE PROPUESTAS DE CADENA LOGÍSTICA
+function procesarNuevaCadena(e) {
+  e.preventDefault();
+  const nuevaCadena = {
+    id: "REQ-" + Math.floor(100000 + Math.random() * 900000),
+    solicitante: {
+      usuario: currentUser.usuario,
+      empresa: currentUser.empresa,
+      correo: currentUser.correo
+    },
+    principal: document.getElementById("cadena-select-principal").value,
+    aduana: document.getElementById("cadena-select-aduana").value,
+    transporte: document.getElementById("cadena-select-transporte").value,
+    detalles: document.getElementById("cadena-detalle-carga").value.trim(),
+    status: "Pendiente"
+  };
+
+  let historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
+  historial.unshift(nuevaCadena);
+  localStorage.setItem("cirrus_historial", JSON.stringify(historial));
+
+  document.getElementById("form-cadena").reset();
+  renderizarHistorialYModulosAdmin();
+  switchTab('historial');
+
+  mostrarDecisionModal("Estructura Registrada", "Tu propuesta de combinación logística ha sido transmitida al panel de control central para la verificación del Administrador.", "border-emerald-500", "text-emerald-500", "fa-solid fa-circle-check bg-emerald-50 text-emerald-500");
+}
+
+// CONTROL TÉCNICO DE SOLICITUDES (ADMIN)
+function dictaminarSolicitud(id, nuevoEstado) {
+  let historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
+  const reqIndex = historial.findIndex(h => h.id === id);
+  
+  if(reqIndex !== -1) {
+    historial[reqIndex].status = nuevoEstado;
+    localStorage.setItem("cirrus_historial", JSON.stringify(historial));
+    renderizarHistorialYModulosAdmin();
+    
+    if(nuevoEstado === 'Aprobado') {
+      mostrarDecisionModal("Estructura Homologada", `La solicitud ${id} ha sido validada y archivada con veredicto aprobatorio permanente.`, "border-emerald-500", "text-emerald-500", "fa-solid fa-shield-checkmark bg-emerald-50 text-emerald-600");
+    } else if(nuevoEstado === 'Denegado') {
+      mostrarDecisionModal("Estructura Denegada", `La combinación del registro ${id} ha sido archivada bajo restricción técnica de la red.`, "border-rose-500", "text-rose-500", "fa-solid fa-circle-xmark bg-rose-50 text-rose-600");
+    }
+  }
+}
+
+// GESTIÓN DE MODAL DE INFORMACIÓN / RESPUESTA
+function mostrarDecisionModal(titulo, mensaje, colorBorde, colorTexto, clasesIcono) {
+  document.getElementById("modal-title").innerText = titulo;
+  document.getElementById("modal-title").className = `font-black text-lg uppercase tracking-wide ${colorTexto}`;
+  document.getElementById("modal-message").innerText = mensaje;
+  
+  const bar = document.getElementById("modal-top-bar");
+  bar.className = `absolute top-0 left-0 right-0 h-2 ${colorBorde.replace('border-', 'bg-')}`;
+  
+  const iconContainer = document.getElementById("modal-icon-container");
+  iconContainer.className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-inner ${clasesIcono.split(' ').slice(1).join(' ')}`;
+  
+  document.getElementById("modal-icon").className = clasesIcono.split(' ')[0] + " " + clasesIcono.split(' ')[1];
+  
+  document.getElementById("decision-modal").classList.remove("hidden");
+}
+
+function cerrarDecisionModal() {
+  document.getElementById("decision-modal").classHtml = document.getElementById("decision-modal").classList.add("hidden");
+}
+
+// MODAL INSPECTOR DE PERFIL COMPLETO
+function abrirInspectorModal(correo) {
+  let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
+  
+  // COMPROBACIÓN ADICIONAL PARA INSPECCIONAR AL ADMINISTRADOR
+  let u = correo === "admin@cirrus.network" ? {
+    usuario: "Administrador del Sistema",
+    empresa: "CIRRUS Logistics Headquarters",
+    correo: "admin@cirrus.network",
+    rif: "G-20019426-0",
+    telefono: "04162409426",
+    rol: "Administrador",
+    fotoPerfil: ""
+  } : usuarios.find(user => user.correo.toLowerCase() === correo.toLowerCase());
+
+  if (!u) return;
+
+  document.getElementById("inspected-name").innerText = u.usuario;
+  document.getElementById("inspected-company").innerText = u.empresa;
+  document.getElementById("inspected-rif").innerText = u.rif;
+  document.getElementById("inspected-email").innerText = u.correo;
+  document.getElementById("inspected-phone").innerText = u.telefono;
+  document.getElementById("inspected-role").innerText = u.rol;
+
+  const avatar = document.getElementById("inspected-avatar");
+  if(u.fotoPerfil) {
+    avatar.style.backgroundImage = `url('${u.fotoPerfil}')`;
+    avatar.innerText = "";
+  } else {
+    avatar.style.backgroundImage = "none";
+    avatar.innerText = u.usuario.charAt(0).toUpperCase();
+  }
+
+  const actionArea = document.getElementById("inspector-action-area");
+  actionArea.innerHTML = "";
+  
+  if (currentUser.rol === "Administrador" && u.rol !== "Administrador") {
+    actionArea.innerHTML = `
+      <button onclick="eliminarUsuarioAliado('${u.correo}'); cerrarInspectorModal();" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider transition-all">
+        Remover Acceso
+      </button>
+    `;
+  }
+
+  document.getElementById("profile-inspector-modal").classList.remove("hidden");
+}
+
+function cerrarInspectorModal() {
+  document.getElementById("profile-inspector-modal").classList.add("hidden");
+}
+
+// ELIMINACIÓN DE REGISTROS MOCK
+function eliminarRegistroHistorial(id) {
+  let historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
+  historial = historial.filter(h => h.id !== id);
+  localStorage.setItem("cirrus_historial", JSON.stringify(historial));
+  renderizarHistorialYModulosAdmin();
+}
+
+function borrarTodoElHistorial() {
+  if (confirm("¿Estás seguro de que deseas purgar la totalidad de los registros del historial?")) {
+    localStorage.setItem("cirrus_historial", JSON.stringify([]));
+    renderizarHistorialYModulosAdmin();
+  }
+}
+
+function eliminarUsuarioAliado(correo) {
+  if (confirm(`¿Proceder a revocar de forma irrevocable las credenciales operativas vinculadas a ${correo}?`)) {
+    let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
+    usuarios = usuarios.filter(u => u.correo.toLowerCase() !== correo.toLowerCase());
+    localStorage.setItem("cirrus_usuarios", JSON.stringify(usuarios));
+    renderizarHistorialYModulosAdmin();
+  }
+}
+
+function eliminarOperador(id) {
+  if (confirm("¿Confirmas la exclusión de este operador logístico del directorio activo?")) {
+    let ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
+    ops = ops.filter(o => o.id !== id);
+    localStorage.setItem("cirrus_operadores", JSON.stringify(ops));
+    construirCatalogosYListas();
+  }
+}
+
+// PROCESAMIENTO DE ARCHIVOS BINARIOS PARA FOTO DE PERFIL (BASE64)
+function procesarFotoPerfil(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onloadend = function() {
+    const base64Data = reader.result;
+    currentUser.fotoPerfil = base64Data;
+    
+    // Sincronizar en el Storage local si es un usuario común
+    if(currentUser.rol !== "Administrador") {
+      let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
+      const idx = usuarios.findIndex(u => u.correo.toLowerCase() === currentUser.correo.toLowerCase());
+      if(idx !== -1) {
+        usuarios[idx].fotoPerfil = base64Data;
+        localStorage.setItem("cirrus_usuarios", JSON.stringify(usuarios));
+      }
+    }
+    
+    abrirSistemaInyectado(currentUser);
+    mostrarDecisionModal("Imagen Actualizada", "El elemento gráfico de perfil ha sido codificado e inyectado con éxito.", "border-emerald-500", "text-emerald-500", "fa-solid fa-image bg-emerald-50 text-emerald-600");
+  };
+  reader.readAsDataURL(file);
+}
+
+// CONTROL DEL ASISTENTE INTELIGENTE CIRRUS AI (MOCKUP)
+function toggleCirrusAI() {
+  const win = document.getElementById("cirrus-ai-window");
+  if(win.classList.contains("hidden")) {
+    win.classList.remove("hidden");
+    setTimeout(() => {
+      win.classList.remove("scale-95", "opacity-0");
+      win.classList.add("scale-100", "opacity-100");
+    }, 10);
+  } else {
+    win.classList.remove("scale-100", "opacity-100");
+    win.classList.add("scale-95", "opacity-0");
+    setTimeout(() => win.classList.add("hidden"), 300);
+  }
+}
+
+function handleCirrusAISubmit(e) {
+  e.preventDefault();
+  const input = document.getElementById("cirrus-ai-input");
+  const msg = input.value.trim();
+  if(!msg) return;
+
+  appendAiMessage('user', msg);
+  input.value = "";
+
+  setTimeout(() => {
+    let resp = "Entendido. Analizando la viabilidad de la carga con la red de operadores certificados... Para cotizaciones específicas o asignaciones directas de Patio, te sugiero estructurar la ruta formal desde el módulo 'Cadena Logística'.";
+    
+    const token = msg.toLowerCase();
+    if(token.includes("barco") || token.includes("mar") || token.includes("naviera") || token.includes("contenedor")) {
+      resp = "Para tránsitos marítimos internacionales, dispones en red de las estructuras consolidadas de <strong>Hapag-Lloyd</strong> y <strong>Maersk Line</strong> con salidas semanales desde los Hubs de Puerto Cabello y La Guaira.";
+    } else if(token.includes("avion") || token.includes("aereo") || token.includes("urgente") || token.includes("farmaco")) {
+      resp = "Ante requerimientos de alta prioridad temporal (fármacos/tecnología), la sección de <strong>Líneas Aéreas</strong> cuenta con tránsitos directos de 1 a 2 días hacia Miami y Madrid.";
+    }
+    appendAiMessage('bot', resp);
+  }, 700);
+}
+
+function appendAiMessage(sender, text) {
+  const container = document.getElementById('cirrus-ai-messages');
+  const div = document.createElement('div');
+  div.className = sender === 'user' ? "flex items-start space-x-2 justify-end text-right" : "flex items-start space-x-2";
+  
+  div.innerHTML = sender === 'user' ? `
+    <div class="bg-blue-600 text-white rounded-2xl px-3.5 py-2.5 shadow-sm max-w-[80%] inline-block">${text}</div>
+  ` : `
+    <div class="w-7 h-7 rounded-lg bg-[#082545] text-white flex items-center justify-center text-[10px] shrink-0"><i class="fa-solid fa-robot"></i></div>
+    <div class="bg-white border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-sm text-slate-700 max-w-[80%] inline-block">${text}</div>
+  `;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function recargarPagina() {
+  construirCatalogosYListas();
+  mostrarDecisionModal("Red Sincronizada", "Los almacenes de datos y operadores se han restablecido con los parámetros del servidor local.", "border-amber-400", "text-amber-500", "fa-solid fa-rotate bg-amber-50 text-amber-500");
+}
+
+function logout() {
+  currentUser = null;
+  document.getElementById("app-interface").classList.add("hidden");
+  document.getElementById("auth-screen").classList.remove("hidden");
+  changeAuthViewState('login');
+}
+
+// TEMPORIZADOR DEL SPLASH SCREEN
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const splash = document.getElementById("splash-screen");
+    splash.classList.add("opacity-0", "pointer-events-none");
+    setTimeout(() => splash.remove(), 1000);
+  }, 1500);
+});
+</script>
+
+</body>
+</html>
