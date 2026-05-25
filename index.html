@@ -1037,7 +1037,8 @@ body {
               <span class="text-[10px] text-slate-400 block truncate uppercase tracking-tight">${u.empresa}</span>
             </div>
             <div class="flex gap-1 shrink-0">
-              <button onclick="abrirInspectorModal('${u.correo}')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm"><i class="fa-solid fa-address-card"></i></button>
+              <button title="Inspeccionar" onclick="abrirInspectorModal('${u.correo}')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm"><i class="fa-solid fa-address-card"></i></button>
+              <button title="Revocar Acceso" onclick="eliminarUsuarioAliado('${u.uid}', '${u.usuario}')" class="bg-rose-100 hover:bg-rose-200 text-rose-600 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm"><i class="fa-solid fa-user-xmark"></i></button>
             </div>
           `;
           userListAdmin.appendChild(item);
@@ -1101,6 +1102,24 @@ body {
         await window.renderizarHistorialYModulosAdmin();
       } catch(e) {
         console.error("Error al borrar registro:", e);
+      }
+    }
+  };
+
+  // ELIMINACIÓN DE USUARIOS ALIADOS (REVOCACIÓN DE ACCESO)
+  window.eliminarUsuarioAliado = async function(uid, nombreUsuario) {
+    if (confirm(`⚠️ ATENCIÓN: ¿Confirmas que deseas eliminar permanentemente a ${nombreUsuario} de la red logística? Perderá acceso inmediato al sistema.`)) {
+      try {
+        // Borramos su perfil corporativo de la base de datos central
+        await deleteDoc(doc(db, "usuarios", uid));
+        
+        // Recargamos los datos para que desaparezca de la lista visual
+        await window.renderizarHistorialYModulosAdmin();
+        
+        window.mostrarDecisionModal("Acceso Revocado", `El aliado comercial ${nombreUsuario} ha sido eliminado de la base de datos exitosamente.`, "border-emerald-500", "text-emerald-500", "fa-solid fa-user-xmark bg-emerald-50 text-emerald-600");
+      } catch(e) {
+        console.error("Error al borrar usuario:", e);
+        window.mostrarDecisionModal("Error de Sistema", "No se pudo eliminar el registro en Firebase.", "border-rose-500", "text-rose-500", "fa-solid fa-triangle-exclamation bg-rose-50 text-rose-600");
       }
     }
   };
@@ -1267,21 +1286,6 @@ body {
       setTimeout(() => splash.remove(), 1000);
     }, 1500);
   });
-</script>
-
-</body>
-</html>         <p class="font-bold text-xs text-[#082545] truncate">${u.usuario}</p>
-            <span class="text-[10px] text-slate-400 block truncate uppercase tracking-tight">${u.empresa}</span>
-          </div>
-          <div class="flex gap-1 shrink-0">
-            <button onclick="abrirInspectorModal('${u.correo}')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm"><i class="fa-solid fa-address-card"></i></button>
-            <button onclick="eliminarUsuarioAliado('${u.correo}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-rose-200 transition-all shadow-sm"><i class="fa-solid fa-user-minus"></i></button>
-          </div>
-        `;
-        userListAdmin.appendChild(item);
-      });
-    });
-}
 </script>
 
 </body>
