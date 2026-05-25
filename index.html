@@ -321,7 +321,7 @@ body {
     </nav>
 
     <div class="p-4 border-t border-slate-800 bg-[#061c35]">
-      <a href="https://wa.me/584162409427" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all shadow-sm group">
+      <a href="https://wa.me/584262262547" target="_blank" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider border border-emerald-500/30 bg-emerald-950/20 text-emerald-400 hover:bg-emerald-500 hover:text-white transition-all shadow-sm group">
         <div class="flex items-center space-x-2.5">
           <i class="fa-brands fa-whatsapp text-base text-emerald-500 group-hover:text-white transition-colors"></i>
           <span class="text-[10px]">Soporte Técnico</span>
@@ -357,7 +357,7 @@ body {
             </div>
             <div>
               <p class="font-black text-xs uppercase tracking-wide text-slate-800">Navieras</p>
-              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">Directorio Activo</p>
             </div>
           </button>
 
@@ -367,7 +367,7 @@ body {
             </div>
             <div>
               <p class="font-black text-xs uppercase tracking-wide text-slate-800">Aerolíneas</p>
-              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">Directorio Activo</p>
             </div>
           </button>
 
@@ -377,7 +377,7 @@ body {
             </div>
             <div>
               <p class="font-black text-xs uppercase tracking-wide text-slate-800">Aduanales</p>
-              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">Directorio Activo</p>
             </div>
           </button>
 
@@ -387,7 +387,7 @@ body {
             </div>
             <div>
               <p class="font-black text-xs uppercase tracking-wide text-slate-800">Transporte</p>
-              <p class="text-[9px] text-slate-400 mt-0.5">20 Aliados en Red</p>
+              <p class="text-[9px] text-slate-400 mt-0.5">Directorio Activo</p>
             </div>
           </button>
         </div>
@@ -434,7 +434,7 @@ body {
                 <textarea id="cadena-detalle-carga" required placeholder="Especificar peso total, tipo de carga (general, peligrosa, refrigerada), volumen y requerimientos especiales..." class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs bg-slate-50 focus:border-[#00B4D8] h-24 resize-none outline-none"></textarea>
               </div>
               <div class="bg-slate-50 border border-slate-200/80 rounded-2xl p-4 flex flex-col justify-between">
-                <p class="text-[11px] text-slate-500 leading-relaxed">Este módulo analiza la compatibilidad operativa de los agentes seleccionados. Al confirmar la estructura, se registrará una propuesta en tu historial para la evaluación técnica individual por parte del Administrador del Sistema.</p>
+                <p class="text-[11px] text-slate-500 leading-relaxed">Este módulo analiza la compatibilidad operativa de los agentes seleccionados. Al confirmar la estructura, se registrará una propuesta en la nube (Firestore) para la evaluación técnica por parte del Administrador.</p>
                 <button type="submit" class="w-full bg-[#134074] hover:bg-[#082545] text-white font-bold py-3 rounded-xl text-xs uppercase tracking-wider transition-all mt-4">
                   Confirmar Estructura Logística
                 </button>
@@ -449,12 +449,7 @@ body {
           <div class="p-6 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <h3 class="text-sm font-black text-[#082545] uppercase tracking-wider">Historial de Cadenas Logísticas</h3>
-              <p class="text-[11px] text-slate-400">Estado global y veredictos de las combinaciones procesadas e individuales de la red</p>
-            </div>
-            <div>
-              <button onclick="borrarTodoElHistorial()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-4 py-2 rounded-xl text-[10px] uppercase tracking-wider transition-all shadow-sm flex items-center gap-1.5">
-                <i class="fa-solid fa-dumpster text-xs"></i> Borrar Todo el Historial
-              </button>
+              <p class="text-[11px] text-slate-400">Estado global y veredictos de las combinaciones procesadas en la nube de Firebase</p>
             </div>
           </div>
           <div class="overflow-x-auto">
@@ -527,14 +522,14 @@ body {
               <h3 class="text-sm font-black text-amber-600 uppercase tracking-wider flex items-center gap-2">
                 <i class="fa-solid fa-circle-exclamation"></i> Solicitudes Nuevas Entrantes
               </h3>
-              <p class="text-[11px] text-slate-400">Cargas y estructuras que esperan por tu evaluación técnica inmediata.</p>
+              <p class="text-[11px] text-slate-400">Cargas y estructuras en Firebase que esperan por tu evaluación técnica.</p>
             </div>
             <div id="admin-requests-list" class="space-y-3"></div>
           </div>
           <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6 space-y-4">
             <div>
               <h3 class="text-sm font-black text-[#082545] uppercase tracking-wider">Control de Usuarios Aliados</h3>
-              <p class="text-[11px] text-slate-400">Inspecciona credenciales completas o remueve accesos</p>
+              <p class="text-[11px] text-slate-400">Inspecciona credenciales registradas en la nube</p>
             </div>
             <div id="admin-users-list" class="space-y-3 max-h-[400px] overflow-y-auto sidebar-scroll"></div>
           </div>
@@ -547,7 +542,7 @@ body {
             <h3 class="text-sm font-black text-indigo-900 uppercase tracking-wider flex items-center gap-2">
               <i class="fa-solid fa-box-archive"></i> Historial de Solicitudes Procesadas
             </h3>
-            <p class="text-[11px] text-slate-400">Registro histórico permanente de todas las solicitudes archivadas como Aprobadas o Denegadas.</p>
+            <p class="text-[11px] text-slate-400">Registro histórico permanente de todas las solicitudes archivadas en Firebase.</p>
           </div>
           <div id="admin-processed-history-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
@@ -592,680 +587,686 @@ body {
   </button>
 </div>
 
-<script>
-// BASE DE DATOS MOCK ORIGINAL EN LOCALSTORAGE
-const defaultOperadores = [
-  { id: "op-1", categoria: "navieras", nombre: "Hapag-Lloyd Venezuela", empresa: "Hapag-Lloyd AG", RIF: "J-00032415-1", correo: "caracas@hapag-lloyd.com", telefono: "02129514211", metricas: "Frecuencia Semanal • Hub Puerto Cabello • Conexión de Carga Consolidada y de un solo consignatario (FCL/LCL)" },
-  { id: "op-2", categoria: "navieras", nombre: "Maersk Line Venezuela", empresa: "Maersk Caribbean", RIF: "J-00124578-2", correo: "ops@maersk.com", telefono: "02129056111", metricas: "Rutados directos hacia Panamá y Manzanillo • Alta disponibilidad de contenedores refrigerados para cadena de frío" },
-  { id: "op-3", categoria: "aerolineas", nombre: "Lufthansa Cargo Caracas", empresa: "Lufthansa Cargo AG", RIF: "J-00085412-9", correo: "ccs.cargo@lufthansa.com", telefono: "02123551211", metricas: "Tránsitos優先 de 48-72 horas hacia Europa Central • Manejo certificado de mercancías peligrosas y farmacéuticas" },
-  { id: "op-4", categoria: "aerolineas", nombre: "Avianca Cargo", empresa: "Tampa Cargo S.A.S.", RIF: "J-30145269-0", correo: "sales.ccs@aviancacargo.com", telefono: "02123552455", metricas: "Estructura logística dedicada a conexiones en las Américas • Frecuencias diarias saliendo desde Maiquetía" },
-  { id: "op-5", categoria: "aduanales", nombre: "Aduanas Taurel", empresa: "Taurel & Cia Sucrs", RIF: "J-00018452-0", correo: "import@taurel.com", telefono: "02125642211", metricas: "Asesoría aduanal con más de 100 años en el país • Corresponsalías activas en las principales aduanas marítimas y aéreas" },
-  { id: "op-6", categoria: "aduanales", nombre: "Aduamerica", empresa: "Corporación Aduamerica C.A.", RIF: "J-31054789-1", correo: "contacto@aduamerica.com", telefono: "02423641152", metricas: "Especialistas en regímenes aduaneros especiales y nacionalización expedita en Puerto Cabello" },
-  { id: "op-7", categoria: "transporte", nombre: "Cotransa", empresa: "Complejo de Transporte S.A.", RIF: "J-00254169-8", correo: "despacho@cotransa.com", telefono: "02418745522", metricas: "Flota propia de chutos con sistemas de posicionamiento global satelital • Permisologías de transporte pesado" },
-  { id: "op-8", categoria: "transporte", nombre: "Transportes Free Ways", empresa: "Free Ways C.A.", RIF: "J-30589641-2", correo: "logistica@freeways.com", telefono: "02432451122", metricas: "Estructuras de distribución express local e interurbana • Unidades furgonadas de resguardo técnico" }
-];
+<script type="module">
+  // 1. IMPORTACIÓN DE FIREBASE (Versión 10.8.0)
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc, getDoc, getDocs, collection, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const defaultUsuarios = [
-  { usuario: "Ángel Díaz", empresa: "Logística Global Marítima", correo: "adiaz@loglobal.com", rif: "J-40521463-0", telefono: "04241524632", rol: "Aliado Comercial", fotoPerfil: "" },
-  { usuario: "Beatriz Mendoza", empresa: "Aduanas del Centro", correo: "bmendoza@aducentro.com", rif: "J-31254698-2", telefono: "04126325412", rol: "Aliado Comercial", fotoPerfil: "" },
-  { usuario: "Carlos Rodríguez", empresa: "Distribución Express C.A.", correo: "crodriguez@distexpress.com", rif: "J-29854123-5", telefono: "04147895236", rol: "Aliado Comercial", fotoPerfil: "" }
-];
-
-// INICIALIZACIÓN SEGURO DEL ALMACENAMIENTO LOCAL
-if (!localStorage.getItem("cirrus_operadores")) localStorage.setItem("cirrus_operadores", JSON.stringify(defaultOperadores));
-if (!localStorage.getItem("cirrus_usuarios")) localStorage.setItem("cirrus_usuarios", JSON.stringify(defaultUsuarios));
-if (!localStorage.getItem("cirrus_historial")) localStorage.setItem("cirrus_historial", JSON.stringify([]));
-
-let currentCategory = 'navieras';
-let currentUser = null;
-
-// GESTIÓN DE VISTAS DE AUTENTICACIÓN
-function changeAuthViewState(state) {
-  document.getElementById("form-login").classList.add("hidden");
-  document.getElementById("form-registro").classList.add("hidden");
-  document.getElementById("form-recuperar").classList.add("hidden");
-  
-  const title = document.getElementById("auth-title");
-  const desc = document.getElementById("auth-desc");
-
-  if(state === 'login') {
-    document.getElementById("form-login").classList.remove("hidden");
-    title.innerText = "Iniciar Sesión";
-    desc.innerText = "Accede al Ecosistema Consultor de Carga";
-  } else if(state === 'registro') {
-    document.getElementById("form-registro").classList.remove("hidden");
-    title.innerText = "Registro Corporativo";
-    desc.innerText = "Súmate a la Red Estratégica de Aliados";
-  } else if(state === 'recuperar') {
-    document.getElementById("form-recuperar").classList.remove("hidden");
-    title.innerText = "Restablecer Acceso";
-    desc.innerText = "Canal Seguro de Recuperación de Credenciales";
-  }
-}
-
-// LOGICA DE LOGEO CON SESIÓN DE ADMINISTRADOR CONFIGURADA
-function handleLogin(e) {
-  e.preventDefault();
-  const correo = document.getElementById("login-correo").value.trim();
-  const contrasena = document.getElementById("login-pass").value;
-
-  // COMPROBACIÓN ORIGINAL DE CREDENCIALES DEL ADMINISTRADOR
-  if (correo === "admin@cirrus.network" && contrasena === "admin123") {
-    currentUser = {
-      usuario: "Administrador del Sistema",
-      empresa: "CIRRUS Logistics Headquarters",
-      correo: "admin@cirrus.network",
-      rif: "G-20019426-0",
-      telefono: "04162409427",
-      rol: "Administrador",
-      fotoPerfil: ""
-    };
-    abrirSistemaInyectado(currentUser);
-    return;
-  }
-
-  // BUSQUEDA DE USUARIOS ALIADOS EN BASE DE DATOS MOCK
-  const usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios"));
-  const usuarioEncontrado = usuarios.find(u => u.correo.toLowerCase() === correo.toLowerCase());
-
-  if (usuarioEncontrado) {
-    currentUser = usuarioEncontrado;
-    abrirSistemaInyectado(currentUser);
-  } else {
-    mostrarDecisionModal("Error de Validación", "Las credenciales especificadas no corresponden a ningún aliado activo en la red.", "border-rose-500", "text-rose-500", "fa-solid fa-triangle-exclamation bg-rose-50 text-rose-500");
-  }
-}
-
-function handleRegistro(e) {
-  e.preventDefault();
-  const nuevoU = {
-    usuario: document.getElementById("reg-usuario").value.trim(),
-    empresa: document.getElementById("reg-empresa").value.trim(),
-    correo: document.getElementById("reg-correo").value.trim(),
-    rif: document.getElementById("reg-rif").value.trim(),
-    telefono: document.getElementById("reg-telefono").value.trim(),
-    rol: "Aliado Comercial",
-    fotoPerfil: ""
+  // 2. CONFIGURACIÓN DEL PROYECTO
+  const firebaseConfig = {
+    apiKey: "AIzaSyDmJfKKo2GcTl-Km5AHTEP7CTy7CetW1ew",
+    authDomain: "cirrus-f890d.firebaseapp.com",
+    projectId: "cirrus-f890d",
+    storageBucket: "cirrus-f890d.firebasestorage.app",
+    messagingSenderId: "40434071633",
+    appId: "1:40434071633:web:61f954bdb73f7d14506070",
+    measurementId: "G-R5618SMESK"
   };
 
-  let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios"));
-  if(usuarios.some(u => u.correo.toLowerCase() === nuevoU.correo.toLowerCase())) {
-    mostrarDecisionModal("Registro Denegado", "El correo corporativo ya se encuentra enlazado a una cuenta de la red.", "border-amber-500", "text-amber-500", "fa-solid fa-triangle-exclamation bg-amber-50 text-amber-400");
-    return;
-  }
+  // 3. INICIALIZACIÓN DE SERVICIOS
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-  usuarios.push(nuevoU);
-  localStorage.setItem("cirrus_usuarios", JSON.stringify(usuarios));
-  currentUser = nuevoU;
-  
-  document.getElementById("form-registro").reset();
-  abrirSistemaInyectado(currentUser);
-}
+  // 4. VARIABLES GLOBALES DE ESTADO
+  window.currentCategory = 'navieras';
+  window.currentUser = null;
 
-function handleRecuperar(e) {
-  e.preventDefault();
-  mostrarDecisionModal("Procedimiento Ejecutado", "Se han despachado los parámetros criptográficos de reinicio a tu buzón institucional.", "border-purple-500", "text-purple-500", "fa-solid fa-envelope-circle-check bg-purple-50 text-purple-600");
-  changeAuthViewState('login');
-  document.getElementById("form-recuperar").reset();
-}
+  // BASE DE DATOS MOCK PARA EL DIRECTORIO DE OPERADORES (Se mantiene estático/local como referencia)
+  const defaultOperadores = [
+    { id: "op-1", categoria: "navieras", nombre: "Hapag-Lloyd Venezuela", empresa: "Hapag-Lloyd AG", RIF: "J-00032415-1", correo: "caracas@hapag-lloyd.com", telefono: "02129514211", metricas: "Frecuencia Semanal • Hub Puerto Cabello • Conexión de Carga Consolidada" },
+    { id: "op-2", categoria: "navieras", nombre: "Maersk Line Venezuela", empresa: "Maersk Caribbean", RIF: "J-00124578-2", correo: "ops@maersk.com", telefono: "02129056111", metricas: "Rutados directos hacia Panamá y Manzanillo • Contenedores refrigerados" },
+    { id: "op-3", categoria: "aerolineas", nombre: "Lufthansa Cargo Caracas", empresa: "Lufthansa Cargo AG", RIF: "J-00085412-9", correo: "ccs.cargo@lufthansa.com", telefono: "02123551211", metricas: "Tránsitos de 48-72 horas hacia Europa Central • Mercancías peligrosas" },
+    { id: "op-4", categoria: "aerolineas", nombre: "Avianca Cargo", empresa: "Tampa Cargo S.A.S.", RIF: "J-30145269-0", correo: "sales.ccs@aviancacargo.com", telefono: "02123552455", metricas: "Conexiones en las Américas • Frecuencias diarias saliendo desde Maiquetía" },
+    { id: "op-5", categoria: "aduanales", nombre: "Aduanas Taurel", empresa: "Taurel & Cia Sucrs", RIF: "J-00018452-0", correo: "import@taurel.com", telefono: "02125642211", metricas: "Asesoría aduanal con más de 100 años • Corresponsalías activas marítimas y aéreas" },
+    { id: "op-6", categoria: "aduanales", nombre: "Aduamerica", empresa: "Corporación Aduamerica C.A.", RIF: "J-31054789-1", correo: "contacto@aduamerica.com", telefono: "02423641152", metricas: "Regímenes aduaneros especiales y nacionalización expedita en Puerto Cabello" },
+    { id: "op-7", categoria: "transporte", nombre: "Cotransa", empresa: "Complejo de Transporte S.A.", RIF: "J-00254169-8", correo: "despacho@cotransa.com", telefono: "02418745522", metricas: "Flota propia con GPS satelital • Permisologías de transporte pesado" },
+    { id: "op-8", categoria: "transporte", nombre: "Transportes Free Ways", empresa: "Free Ways C.A.", RIF: "J-30589641-2", correo: "logistica@freeways.com", telefono: "02432451122", metricas: "Distribución express local e interurbana • Unidades furgonadas" }
+  ];
+  if (!localStorage.getItem("cirrus_operadores")) localStorage.setItem("cirrus_operadores", JSON.stringify(defaultOperadores));
 
-// INYECCIÓN DE PERFIL Y DESBLOQUEO DE INTERFAZ
-function abrirSistemaInyectado(user) {
-  document.getElementById('user-display-name').innerText = user.usuario;
-  document.getElementById('user-display-company').innerText = user.empresa;
-  
-  if(document.getElementById('my-profile-name')) {
-    document.getElementById('my-profile-name').innerText = user.usuario;
-    document.getElementById('my-profile-company').innerText = user.empresa;
-    document.getElementById('my-profile-email').innerText = user.correo;
-    document.getElementById('my-profile-rif').innerText = user.rif;
-    document.getElementById('my-profile-phone').innerText = user.telefono;
-    document.getElementById('my-profile-role').innerText = user.rol;
-  }
-
-  const avatarDiv = document.getElementById('user-avatar');
-  const profileImgDiv = document.getElementById('my-profile-image');
-  const letraInicial = user.usuario.charAt(0).toUpperCase();
-  
-  if (user.fotoPerfil) {
-    avatarDiv.style.backgroundImage = `url('${user.fotoPerfil}')`;
-    avatarDiv.innerText = "";
-    if(profileImgDiv) {
-      profileImgDiv.style.backgroundImage = `url('${user.fotoPerfil}')`;
-      profileImgDiv.innerText = "";
-    }
-  } else {
-    avatarDiv.style.backgroundImage = "none";
-    avatarDiv.innerText = letraInicial;
-    if(profileImgDiv) {
-      profileImgDiv.style.backgroundImage = "none";
-      profileImgDiv.innerText = letraInicial;
-    }
-  }
-
-  // VALIDACIÓN DE ROL PARA VISIBILIDAD DEL MÓDULO PRIVADO
-  const adminSection = document.getElementById("admin-menu-section");
-  if (user.rol === "Administrador") {
-    adminSection.classList.remove("hidden");
-  } else {
-    adminSection.classList.add("hidden");
-  }
-
-  document.getElementById("auth-screen").classList.add("hidden");
-  document.getElementById("app-interface").classList.remove("hidden");
-  
-  construirCatalogosYListas();
-  switchTab('marketplace');
-}
-
-// MANEJO DE FLUJO DE PESTAÑAS
-function switchTab(tabId) {
-  const tabs = ['marketplace', 'cadena', 'historial', 'mi-perfil', 'admin-panel', 'admin-history'];
-  tabs.forEach(t => {
-    const el = document.getElementById(`tab-${t}`);
-    if(el) el.classList.add("hidden-tab");
+  // GESTIÓN DE VISTAS DE AUTENTICACIÓN
+  window.changeAuthViewState = function(state) {
+    document.getElementById("form-login").classList.add("hidden");
+    document.getElementById("form-registro").classList.add("hidden");
+    document.getElementById("form-recuperar").classList.add("hidden");
     
-    const btn = document.getElementById(`btn-tab-${t}`);
-    if(btn) {
-      btn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white";
+    const title = document.getElementById("auth-title");
+    const desc = document.getElementById("auth-desc");
+
+    if(state === 'login') {
+      document.getElementById("form-login").classList.remove("hidden");
+      title.innerText = "Iniciar Sesión";
+      desc.innerText = "Accede al Ecosistema Consultor de Carga";
+    } else if(state === 'registro') {
+      document.getElementById("form-registro").classList.remove("hidden");
+      title.innerText = "Registro Corporativo";
+      desc.innerText = "Súmate a la Red Estratégica de Aliados";
+    } else if(state === 'recuperar') {
+      document.getElementById("form-recuperar").classList.remove("hidden");
+      title.innerText = "Restablecer Acceso";
+      desc.innerText = "Canal Seguro de Recuperación de Credenciales";
     }
-  });
+  };
 
-  const activeTab = document.getElementById(`tab-${tabId}`);
-  if(activeTab) activeTab.classList.remove("hidden-tab");
-  
-  const activeBtn = document.getElementById(`btn-tab-${tabId}`);
-  if(activeBtn) {
-    activeBtn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#00B4D8] text-white shadow-md";
-  }
+  // 5. REGISTRO EN FIREBASE
+  window.handleRegistro = async function(e) {
+    e.preventDefault();
+    const correo = document.getElementById("reg-correo").value.trim();
+    const contrasena = document.getElementById("reg-pass").value;
+    const usuario = document.getElementById("reg-usuario").value.trim();
+    const empresa = document.getElementById("reg-empresa").value.trim();
+    const rif = document.getElementById("reg-rif").value.trim();
+    const telefono = document.getElementById("reg-telefono").value.trim();
 
-  const headerTitle = document.getElementById("current-tab-title");
-  if(tabId === 'marketplace') headerTitle.innerText = "Directorio Aliados";
-  if(tabId === 'cadena') headerTitle.innerText = "Estructurar Cadena";
-  if(tabId === 'historial') headerTitle.innerText = "Historial Rutas";
-  if(tabId === 'mi-perfil') headerTitle.innerText = "Mi Perfil Corporativo";
-  if(tabId === 'admin-panel') headerTitle.innerText = "Panel de Evaluación Técnica";
-  if(tabId === 'admin-history') headerTitle.innerText = "Archivo Central de Veredictos";
-}
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, correo, contrasena);
+      const user = userCredential.user;
 
-// RENDERIZADO DINÁMICO DE COMPONENTES
-function construirCatalogosYListas() {
-  filtrarCatalogo(currentCategory);
-  actualizarSelectsFormCadenas();
-  renderizarHistorialYModulosAdmin();
-}
+      const nuevoPerfil = {
+        uid: user.uid,
+        usuario: usuario,
+        empresa: empresa,
+        correo: correo,
+        rif: rif,
+        telefono: telefono,
+        rol: "Aliado Comercial",
+        fotoPerfil: "",
+        fechaRegistro: new Date().toISOString()
+      };
 
-function filtrarCatalogo(cat) {
-  currentCategory = cat;
-  const cats = ['navieras', 'aerolineas', 'aduanales', 'transporte'];
-  cats.forEach(c => {
-    const btn = document.getElementById(`btn-cat-${c}`);
-    if(btn) {
-      if(c === cat) {
-        btn.className = "bg-white border-2 border-[#00B4D8] rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm";
+      // Guardar en Firestore
+      await setDoc(doc(db, "usuarios", user.uid), nuevoPerfil);
+
+      window.currentUser = nuevoPerfil;
+      document.getElementById("form-registro").reset();
+      window.abrirSistemaInyectado(window.currentUser);
+
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        window.mostrarDecisionModal("Registro Denegado", "El correo corporativo ya se encuentra enlazado a una cuenta.", "border-amber-500", "text-amber-500", "fa-solid fa-triangle-exclamation bg-amber-50 text-amber-400");
       } else {
-        btn.className = "bg-white border-2 border-transparent hover:border-slate-300 rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm";
+        window.mostrarDecisionModal("Error del Sistema", error.message, "border-rose-500", "text-rose-500", "fa-solid fa-circle-xmark bg-rose-50 text-rose-600");
       }
     }
-  });
-
-  const titleMap = {
-    'navieras': 'Operadores Navieros Asociados',
-    'aerolineas': 'Líneas Aéreas Aliadas',
-    'aduanales': 'Agencias Aduanales Certificadas',
-    'transporte': 'Unidades de Transporte Terrestre'
   };
-  document.getElementById("marketplace-category-title").innerText = titleMap[cat] || "Operadores";
 
-  const ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
-  const filtrados = ops.filter(o => o.categoria === cat);
-  const grid = document.getElementById("marketplace-grid");
-  grid.innerHTML = "";
+  // 6. INICIO DE SESIÓN CON FIREBASE
+  window.handleLogin = async function(e) {
+    e.preventDefault();
+    const correo = document.getElementById("login-correo").value.trim();
+    const contrasena = document.getElementById("login-pass").value;
 
-  if(filtrados.length === 0) {
-    grid.innerHTML = `<div class="col-span-full bg-slate-50 border border-dashed rounded-2xl p-8 text-center text-xs text-slate-400 font-bold">Ningún operador configurado en esta categoría.</div>`;
-    return;
-  }
+    // Validación especial del administrador central
+    if (correo === "admin@cirrus.network" && contrasena === "admin123") {
+      window.currentUser = {
+        uid: "admin-master",
+        usuario: "Administrador del Sistema",
+        empresa: "CIRRUS Logistics Headquarters",
+        correo: "admin@cirrus.network",
+        rif: "G-20019426-0",
+        telefono: "04262262547",
+        rol: "Administrador",
+        fotoPerfil: ""
+      };
+      window.abrirSistemaInyectado(window.currentUser);
+      return;
+    }
 
-  filtrados.forEach(o => {
-    const card = document.createElement("div");
-    card.className = "bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all";
-    card.innerHTML = `
-      <div class="space-y-3">
-        <div class="flex justify-between items-start">
-          <div>
-            <h4 class="font-black text-sm text-[#082545] tracking-wide leading-tight">${o.nombre}</h4>
-            <span class="text-[9px] text-slate-400 font-mono font-bold uppercase">${o.empresa} • ${o.RIF}</span>
-          </div>
-          ${currentUser.rol === "Administrador" ? `
-            <button onclick="eliminarOperador('${o.id}')" class="text-slate-300 hover:text-rose-600 transition-colors text-xs p-1">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          ` : ''}
-        </div>
-        <p class="text-[11px] text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">${o.metricas}</p>
-      </div>
-      <div class="grid grid-cols-2 gap-2 mt-4 text-[10px] pt-2 border-t border-slate-100">
-        <div class="truncate text-slate-400"><i class="fa-solid fa-envelope text-[#00B4D8] mr-1"></i>${o.correo}</div>
-        <div class="text-right font-mono text-slate-500"><i class="fa-solid fa-phone text-emerald-500 mr-1"></i>${o.telefono}</div>
-      </div>
-    `;
-    grid.appendChild(card);
-  });
-}
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, correo, contrasena);
+      const user = userCredential.user;
 
-function actualizarSelectsFormCadenas() {
-  const ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
-  
-  const selectPrincipal = document.getElementById("cadena-select-principal");
-  const selectAduana = document.getElementById("cadena-select-aduana");
-  const selectTransporte = document.getElementById("cadena-select-transporte");
+      // Buscar perfil en Firestore
+      const docRef = doc(db, "usuarios", user.uid);
+      const docSnap = await getDoc(docRef);
 
-  if(!selectPrincipal) return;
+      if (docSnap.exists()) {
+        window.currentUser = docSnap.data();
+        window.abrirSistemaInyectado(window.currentUser);
+      } else {
+        window.mostrarDecisionModal("Error", "Perfil no encontrado en la base de datos central.", "border-rose-500", "text-rose-500", "fa-solid fa-triangle-exclamation");
+      }
+    } catch (error) {
+      window.mostrarDecisionModal("Error de Validación", "Las credenciales especificadas no son válidas o no existen.", "border-rose-500", "text-rose-500", "fa-solid fa-triangle-exclamation bg-rose-50 text-rose-500");
+    }
+  };
 
-  selectPrincipal.innerHTML = '<option value="" disabled selected>Selecciona operador de tránsito...</option>';
-  selectAduana.innerHTML = '<option value="" disabled selected>Selecciona agencia aduanal...</option>';
-  selectTransporte.innerHTML = '<option value="" disabled selected>Selecciona unidad terrestre...</option>';
+  window.handleRecuperar = function(e) {
+    e.preventDefault();
+    window.mostrarDecisionModal("Procedimiento Ejecutado", "Se han despachado los parámetros criptográficos de reinicio a tu buzón institucional.", "border-purple-500", "text-purple-500", "fa-solid fa-envelope-circle-check bg-purple-50 text-purple-600");
+    window.changeAuthViewState('login');
+    document.getElementById("form-recuperar").reset();
+  };
 
-  ops.forEach(o => {
-    const option = `<option value="${o.nombre}">${o.nombre}</option>`;
-    if(o.categoria === 'navieras' || o.categoria === 'aerolineas') selectPrincipal.innerHTML += option;
-    if(o.categoria === 'aduanales') selectAduana.innerHTML += option;
-    if(o.categoria === 'transporte') selectTransporte.innerHTML += option;
-  });
-}
+  // 7. INYECCIÓN DEL SISTEMA Y UI
+  window.abrirSistemaInyectado = function(user) {
+    document.getElementById('user-display-name').innerText = user.usuario;
+    document.getElementById('user-display-company').innerText = user.empresa;
+    
+    if(document.getElementById('my-profile-name')) {
+      document.getElementById('my-profile-name').innerText = user.usuario;
+      document.getElementById('my-profile-company').innerText = user.empresa;
+      document.getElementById('my-profile-email').innerText = user.correo;
+      document.getElementById('my-profile-rif').innerText = user.rif;
+      document.getElementById('my-profile-phone').innerText = user.telefono;
+      document.getElementById('my-profile-role').innerText = user.rol;
+    }
 
-function renderizarHistorialYModulosAdmin() {
-  const historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
-  const tableBody = document.getElementById("historial-table-body");
-  
-  const reqListAdmin = document.getElementById("admin-requests-list");
-  const historyListAdmin = document.getElementById("admin-processed-history-list");
-  const userListAdmin = document.getElementById("admin-users-list");
-
-  if(tableBody) tableBody.innerHTML = "";
-  if(reqListAdmin) reqListAdmin.innerHTML = "";
-  if(historyListAdmin) historyListAdmin.innerHTML = "";
-  if(userListAdmin) userListAdmin.innerHTML = "";
-
-  // VISUALIZACIÓN DEL HISTORIAL DE RUTAS PARA EL CLIENTE LOGUEADO
-  const historialFiltrado = currentUser.rol === "Administrador" ? historial : historial.filter(h => h.solicitante.correo === currentUser.correo);
-
-  if(tableBody) {
-    if(historialFiltrado.length === 0) {
-      tableBody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 font-bold bg-slate-50/50">Ninguna estructura registrada en el sistema histórico.</td></tr>`;
+    const avatarDiv = document.getElementById('user-avatar');
+    const profileImgDiv = document.getElementById('my-profile-image');
+    const letraInicial = user.usuario.charAt(0).toUpperCase();
+    
+    if (user.fotoPerfil) {
+      avatarDiv.style.backgroundImage = `url('${user.fotoPerfil}')`;
+      avatarDiv.innerText = "";
+      if(profileImgDiv) {
+        profileImgDiv.style.backgroundImage = `url('${user.fotoPerfil}')`;
+        profileImgDiv.innerText = "";
+      }
     } else {
-      historialFiltrado.forEach(h => {
-        let statusBadge = "";
-        if(h.status === "Pendiente") statusBadge = `<span class="bg-amber-50 border border-amber-200 text-amber-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-spinner animate-spin mr-1"></i>Pendiente</span>`;
-        if(h.status === "Aprobado") statusBadge = `<span class="bg-emerald-50 border border-emerald-200 text-emerald-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-check-double mr-1"></i>Aprobado</span>`;
-        if(h.status === "Denegado") statusBadge = `<span class="bg-rose-50 border border-rose-200 text-rose-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-ban mr-1"></i>Denegado</span>`;
-
-        const tr = document.createElement("tr");
-        tr.className = "border-b border-slate-100 hover:bg-slate-50/80 transition-all";
-        tr.innerHTML = `
-          <td class="p-4">
-            <p class="font-bold text-[#082545] cursor-pointer hover:underline" onclick="abrirInspectorModal('${h.solicitante.correo}')"><i class="fa-solid fa-circle-user mr-1.5 text-slate-400"></i>${h.solicitante.usuario}</p>
-            <span class="text-[10px] text-slate-400 font-medium block">${h.solicitante.empresa}</span>
-          </td>
-          <td class="p-4 font-semibold text-slate-600">${h.principal}</td>
-          <td class="p-4 text-slate-500">
-            <div class="space-y-0.5">
-              <div><i class="fa-solid fa-passport text-[#5B2C6F] mr-1"></i>${h.aduana}</div>
-              <div><i class="fa-solid fa-truck text-[#1E8449] mr-1"></i>${h.transporte}</div>
-            </div>
-          </td>
-          <td class="p-4 text-slate-500 max-w-xs truncate" title="${h.detalles}">${h.detalles}</td>
-          <td class="p-4 text-center">${statusBadge}</td>
-          <td class="p-4 text-center">
-            <button onclick="eliminarRegistroHistorial('${h.id}')" class="text-slate-300 hover:text-rose-600 p-1 text-sm transition-colors">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
-          </td>
-        `;
-        tableBody.appendChild(tr);
-      });
+      avatarDiv.style.backgroundImage = "none";
+      avatarDiv.innerText = letraInicial;
+      if(profileImgDiv) {
+        profileImgDiv.style.backgroundImage = "none";
+        profileImgDiv.innerText = letraInicial;
+      }
     }
-  }
 
-  // FLUJO OPERATIVO EXCLUSIVO DEL PANEL DE ADMINISTRACIÓN
-  if(currentUser.rol === "Administrador") {
-    // 1. Solicitudes Entrantes Técnicas
-    const pendientes = historial.filter(h => h.status === "Pendiente");
-    if(reqListAdmin) {
-      if(pendientes.length === 0) {
-        reqListAdmin.innerHTML = `<div class="bg-slate-50 border border-dashed rounded-xl p-6 text-center text-xs text-slate-400 font-bold">No existen solicitudes pendientes por evaluar.</div>`;
+    const adminSection = document.getElementById("admin-menu-section");
+    if (user.rol === "Administrador") {
+      adminSection.classList.remove("hidden");
+    } else {
+      adminSection.classList.add("hidden");
+    }
+
+    document.getElementById("auth-screen").classList.add("hidden");
+    document.getElementById("app-interface").classList.remove("hidden");
+    
+    window.construirCatalogosYListas();
+    window.switchTab('marketplace');
+  };
+
+  window.switchTab = function(tabId) {
+    const tabs = ['marketplace', 'cadena', 'historial', 'mi-perfil', 'admin-panel', 'admin-history'];
+    tabs.forEach(t => {
+      const el = document.getElementById(`tab-${t}`);
+      if(el) el.classList.add("hidden-tab");
+      const btn = document.getElementById(`btn-tab-${t}`);
+      if(btn) btn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all text-slate-400 hover:bg-[#134074]/50 hover:text-white";
+    });
+
+    const activeTab = document.getElementById(`tab-${tabId}`);
+    if(activeTab) activeTab.classList.remove("hidden-tab");
+    
+    const activeBtn = document.getElementById(`btn-tab-${tabId}`);
+    if(activeBtn) activeBtn.className = "w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#00B4D8] text-white shadow-md";
+
+    const headerTitle = document.getElementById("current-tab-title");
+    if(tabId === 'marketplace') headerTitle.innerText = "Directorio Aliados";
+    if(tabId === 'cadena') headerTitle.innerText = "Estructurar Cadena";
+    if(tabId === 'historial') headerTitle.innerText = "Historial Rutas";
+    if(tabId === 'mi-perfil') headerTitle.innerText = "Mi Perfil Corporativo";
+    if(tabId === 'admin-panel') headerTitle.innerText = "Panel de Evaluación Técnica";
+    if(tabId === 'admin-history') headerTitle.innerText = "Archivo Central de Veredictos";
+  };
+
+  window.construirCatalogosYListas = function() {
+    window.filtrarCatalogo(window.currentCategory);
+    window.actualizarSelectsFormCadenas();
+    window.renderizarHistorialYModulosAdmin(); // Ahora consulta a Firestore
+  };
+
+  window.filtrarCatalogo = function(cat) {
+    window.currentCategory = cat;
+    const cats = ['navieras', 'aerolineas', 'aduanales', 'transporte'];
+    cats.forEach(c => {
+      const btn = document.getElementById(`btn-cat-${c}`);
+      if(btn) {
+        if(c === cat) btn.className = "bg-white border-2 border-[#00B4D8] rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm";
+        else btn.className = "bg-white border-2 border-transparent hover:border-slate-300 rounded-2xl p-4 flex flex-col items-center text-center space-y-2 group transition-all shadow-sm";
+      }
+    });
+
+    const titleMap = {
+      'navieras': 'Operadores Navieros Asociados',
+      'aerolineas': 'Líneas Aéreas Aliadas',
+      'aduanales': 'Agencias Aduanales Certificadas',
+      'transporte': 'Unidades de Transporte Terrestre'
+    };
+    document.getElementById("marketplace-category-title").innerText = titleMap[cat] || "Operadores";
+
+    const ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
+    const filtrados = ops.filter(o => o.categoria === cat);
+    const grid = document.getElementById("marketplace-grid");
+    grid.innerHTML = "";
+
+    if(filtrados.length === 0) {
+      grid.innerHTML = `<div class="col-span-full bg-slate-50 border border-dashed rounded-2xl p-8 text-center text-xs text-slate-400 font-bold">Ningún operador configurado.</div>`;
+      return;
+    }
+
+    filtrados.forEach(o => {
+      const card = document.createElement("div");
+      card.className = "bg-white rounded-2xl border border-slate-200/80 shadow-sm p-5 flex flex-col justify-between hover:shadow-md transition-all";
+      card.innerHTML = `
+        <div class="space-y-3">
+          <div class="flex justify-between items-start">
+            <div>
+              <h4 class="font-black text-sm text-[#082545] tracking-wide leading-tight">${o.nombre}</h4>
+              <span class="text-[9px] text-slate-400 font-mono font-bold uppercase">${o.empresa} • ${o.RIF}</span>
+            </div>
+            ${window.currentUser.rol === "Administrador" ? `
+              <button onclick="eliminarOperador('${o.id}')" class="text-slate-300 hover:text-rose-600 transition-colors text-xs p-1"><i class="fa-solid fa-trash-can"></i></button>
+            ` : ''}
+          </div>
+          <p class="text-[11px] text-slate-500 leading-relaxed bg-slate-50 p-2.5 rounded-xl border border-slate-100">${o.metricas}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-2 mt-4 text-[10px] pt-2 border-t border-slate-100">
+          <div class="truncate text-slate-400"><i class="fa-solid fa-envelope text-[#00B4D8] mr-1"></i>${o.correo}</div>
+          <div class="text-right font-mono text-slate-500"><i class="fa-solid fa-phone text-emerald-500 mr-1"></i>${o.telefono}</div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  };
+
+  window.actualizarSelectsFormCadenas = function() {
+    const ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
+    const selectPrincipal = document.getElementById("cadena-select-principal");
+    const selectAduana = document.getElementById("cadena-select-aduana");
+    const selectTransporte = document.getElementById("cadena-select-transporte");
+
+    if(!selectPrincipal) return;
+
+    selectPrincipal.innerHTML = '<option value="" disabled selected>Selecciona operador de tránsito...</option>';
+    selectAduana.innerHTML = '<option value="" disabled selected>Selecciona agencia aduanal...</option>';
+    selectTransporte.innerHTML = '<option value="" disabled selected>Selecciona unidad terrestre...</option>';
+
+    ops.forEach(o => {
+      const option = `<option value="${o.nombre}">${o.nombre}</option>`;
+      if(o.categoria === 'navieras' || o.categoria === 'aerolineas') selectPrincipal.innerHTML += option;
+      if(o.categoria === 'aduanales') selectAduana.innerHTML += option;
+      if(o.categoria === 'transporte') selectTransporte.innerHTML += option;
+    });
+  };
+
+  // 8. OBTENCIÓN Y RENDERIZADO DE DATOS DESDE FIRESTORE
+  window.renderizarHistorialYModulosAdmin = async function() {
+    let historial = [];
+    let usuariosAliados = [];
+
+    try {
+      // Traer historial de solicitudes de Firestore
+      const querySnapshot = await getDocs(collection(db, "solicitudes"));
+      querySnapshot.forEach((doc) => {
+        historial.push({ firebaseId: doc.id, ...doc.data() });
+      });
+      // Ordenar por fecha (más reciente primero)
+      historial.sort((a,b) => new Date(b.fecha) - new Date(a.fecha));
+
+      // Si es admin, traer la lista global de usuarios
+      if (window.currentUser.rol === "Administrador") {
+        const usersSnapshot = await getDocs(collection(db, "usuarios"));
+        usersSnapshot.forEach((doc) => usuariosAliados.push(doc.data()));
+      }
+    } catch (error) {
+      console.error("Error consultando a Firestore: ", error);
+    }
+
+    const tableBody = document.getElementById("historial-table-body");
+    const reqListAdmin = document.getElementById("admin-requests-list");
+    const historyListAdmin = document.getElementById("admin-processed-history-list");
+    const userListAdmin = document.getElementById("admin-users-list");
+
+    if(tableBody) tableBody.innerHTML = "";
+    if(reqListAdmin) reqListAdmin.innerHTML = "";
+    if(historyListAdmin) historyListAdmin.innerHTML = "";
+    if(userListAdmin) userListAdmin.innerHTML = "";
+
+    // Renderizar Historial para el cliente
+    const historialFiltrado = window.currentUser.rol === "Administrador" ? historial : historial.filter(h => h.solicitante.correo === window.currentUser.correo);
+
+    if(tableBody) {
+      if(historialFiltrado.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 font-bold bg-slate-50/50">Ninguna estructura registrada en el sistema.</td></tr>`;
       } else {
-        pendientes.forEach(p => {
+        historialFiltrado.forEach(h => {
+          let statusBadge = "";
+          if(h.status === "Pendiente") statusBadge = `<span class="bg-amber-50 border border-amber-200 text-amber-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-spinner animate-spin mr-1"></i>Pendiente</span>`;
+          if(h.status === "Aprobado") statusBadge = `<span class="bg-emerald-50 border border-emerald-200 text-emerald-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-check-double mr-1"></i>Aprobado</span>`;
+          if(h.status === "Denegado") statusBadge = `<span class="bg-rose-50 border border-rose-200 text-rose-600 font-bold px-2 py-0.5 rounded-full text-[9px] uppercase"><i class="fa-solid fa-ban mr-1"></i>Denegado</span>`;
+
+          const tr = document.createElement("tr");
+          tr.className = "border-b border-slate-100 hover:bg-slate-50/80 transition-all";
+          tr.innerHTML = `
+            <td class="p-4">
+              <p class="font-bold text-[#082545] cursor-pointer hover:underline" onclick="abrirInspectorModal('${h.solicitante.correo}')"><i class="fa-solid fa-circle-user mr-1.5 text-slate-400"></i>${h.solicitante.usuario}</p>
+              <span class="text-[10px] text-slate-400 font-medium block">${h.solicitante.empresa}</span>
+            </td>
+            <td class="p-4 font-semibold text-slate-600">${h.principal}</td>
+            <td class="p-4 text-slate-500">
+              <div class="space-y-0.5">
+                <div><i class="fa-solid fa-passport text-[#5B2C6F] mr-1"></i>${h.aduana}</div>
+                <div><i class="fa-solid fa-truck text-[#1E8449] mr-1"></i>${h.transporte}</div>
+              </div>
+            </td>
+            <td class="p-4 text-slate-500 max-w-xs truncate" title="${h.detalles}">${h.detalles}</td>
+            <td class="p-4 text-center">${statusBadge}</td>
+            <td class="p-4 text-center">
+              <button onclick="eliminarRegistroHistorial('${h.firebaseId}')" class="text-slate-300 hover:text-rose-600 p-1 text-sm transition-colors"><i class="fa-solid fa-trash-can"></i></button>
+            </td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      }
+    }
+
+    // Renderizar Vistas Privadas de Admin
+    if(window.currentUser.rol === "Administrador") {
+      const pendientes = historial.filter(h => h.status === "Pendiente");
+      if(reqListAdmin) {
+        if(pendientes.length === 0) {
+          reqListAdmin.innerHTML = `<div class="bg-slate-50 border border-dashed rounded-xl p-6 text-center text-xs text-slate-400 font-bold">No existen solicitudes pendientes por evaluar.</div>`;
+        } else {
+          pendientes.forEach(p => {
+            const item = document.createElement("div");
+            item.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 shadow-inner";
+            item.innerHTML = `
+              <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 border-b border-slate-200/60 pb-2">
+                <div>
+                  <span class="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-mono font-black">${p.idVisual}</span>
+                  <p class="text-xs font-bold text-[#082545] mt-1">Aliado: <span class="underline cursor-pointer" onclick="abrirInspectorModal('${p.solicitante.correo}')">${p.solicitante.usuario}</span> (${p.solicitante.empresa})</p>
+                </div>
+                <div class="flex gap-1.5 shrink-0">
+                  <button onclick="dictaminarSolicitud('${p.firebaseId}', '${p.idVisual}', 'Aprobado')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-sm"><i class="fa-solid fa-square-check mr-1"></i>Aprobar</button>
+                  <button onclick="dictaminarSolicitud('${p.firebaseId}', '${p.idVisual}', 'Denegado')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-sm"><i class="fa-solid fa-square-xmark mr-1"></i>Denegar</button>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-[11px] font-semibold text-slate-600">
+                <div><span class="block text-[9px] text-slate-400 uppercase font-black">Ruta Internacional</span>${p.principal}</div>
+                <div><span class="block text-[9px] text-slate-400 uppercase font-black">Agente Aduanal</span>${p.aduana}</div>
+                <div><span class="block text-[9px] text-slate-400 uppercase font-black">Distribución</span>${p.transporte}</div>
+              </div>
+              <div class="text-[11px] bg-white p-2 rounded-lg border text-slate-500 leading-relaxed">
+                <span class="block text-[9px] text-slate-400 uppercase font-black mb-0.5">Descripción Técnica de Carga</span>
+                ${p.detalles}
+              </div>
+            `;
+            reqListAdmin.appendChild(item);
+          });
+        }
+      }
+
+      const procesados = historial.filter(h => h.status !== "Pendiente");
+      if(historyListAdmin) {
+        if(procesados.length === 0) {
+          historyListAdmin.innerHTML = `<div class="col-span-full bg-slate-50 border border-dashed rounded-xl p-6 text-center text-xs text-slate-400 font-bold">Ninguna solicitud evaluada en la base de datos.</div>`;
+        } else {
+          procesados.forEach(pr => {
+            const card = document.createElement("div");
+            const esAprobado = pr.status === "Aprobado";
+            card.className = `bg-white border-l-4 ${esAprobado ? 'border-emerald-500' : 'border-rose-500'} rounded-xl border border-slate-200 p-4 space-y-2 shadow-sm`;
+            card.innerHTML = `
+              <div class="flex justify-between items-start">
+                <div>
+                  <h5 class="font-bold text-xs text-slate-800">${pr.solicitante.usuario}</h5>
+                  <span class="text-[9px] text-slate-400 font-medium">${pr.solicitante.empresa}</span>
+                </div>
+                <span class="${esAprobado ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">${pr.status}</span>
+              </div>
+              <p class="text-[10px] text-slate-500 truncate"><span class="font-bold">Estructura:</span> ${pr.principal} + ${pr.aduana} + ${pr.transporte}</p>
+              <div class="flex justify-between items-center text-[9px] pt-1 border-t text-slate-400">
+                <span class="font-mono">${pr.idVisual}</span>
+                <button onclick="dictaminarSolicitud('${pr.firebaseId}', '${pr.idVisual}', 'Pendiente')" class="text-[#00B4D8] font-bold hover:underline uppercase tracking-wide"><i class="fa-solid fa-arrow-rotate-left mr-1"></i>Reevaluar</button>
+              </div>
+            `;
+            historyListAdmin.appendChild(card);
+          });
+        }
+      }
+
+      if(userListAdmin) {
+        usuariosAliados.forEach(u => {
           const item = document.createElement("div");
-          item.className = "bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3 shadow-inner";
+          item.className = "bg-slate-50 border rounded-xl p-3 flex items-center justify-between gap-3 hover:bg-slate-100/70 transition-all";
           item.innerHTML = `
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2 border-b border-slate-200/60 pb-2">
-              <div>
-                <span class="text-[9px] bg-slate-200 text-slate-600 px-2 py-0.5 rounded-md font-mono font-black">${p.id}</span>
-                <p class="text-xs font-bold text-[#082545] mt-1">Aliado: <span class="underline cursor-pointer" onclick="abrirInspectorModal('${p.solicitante.correo}')">${p.solicitante.usuario}</span> (${p.solicitante.empresa})</p>
-              </div>
-              <div class="flex gap-1.5 shrink-0">
-                <button onclick="dictaminarSolicitud('${p.id}', 'Aprobado')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-sm"><i class="fa-solid fa-square-check mr-1"></i>Aprobar</button>
-                <button onclick="dictaminarSolicitud('${p.id}', 'Denegado')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1.5 rounded-lg text-[10px] uppercase tracking-wider transition-all shadow-sm"><i class="fa-solid fa-square-xmark mr-1"></i>Denegar</button>
-              </div>
+            <div class="overflow-hidden">
+              <p class="font-bold text-xs text-[#082545] truncate">${u.usuario}</p>
+              <span class="text-[10px] text-slate-400 block truncate uppercase tracking-tight">${u.empresa}</span>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-[11px] font-semibold text-slate-600">
-              <div><span class="block text-[9px] text-slate-400 uppercase font-black">Ruta Internacional</span>${p.principal}</div>
-              <div><span class="block text-[9px] text-slate-400 uppercase font-black">Agente Aduanal</span>${p.aduana}</div>
-              <div><span class="block text-[9px] text-slate-400 uppercase font-black">Distribución</span>${p.transporte}</div>
-            </div>
-            <div class="text-[11px] bg-white p-2 rounded-lg border text-slate-500 leading-relaxed">
-              <span class="block text-[9px] text-slate-400 uppercase font-black mb-0.5">Descripción Técnica de Carga</span>
-              ${p.detalles}
+            <div class="flex gap-1 shrink-0">
+              <button onclick="abrirInspectorModal('${u.correo}')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm"><i class="fa-solid fa-address-card"></i></button>
             </div>
           `;
-          reqListAdmin.appendChild(item);
+          userListAdmin.appendChild(item);
         });
       }
     }
+  };
 
-    // 2. Historial de Veredictos Procesados
-    const procesados = historial.filter(h => h.status !== "Pendiente");
-    if(historyListAdmin) {
-      if(procesados.length === 0) {
-        historyListAdmin.innerHTML = `<div class="col-span-full bg-slate-50 border border-dashed rounded-xl p-6 text-center text-xs text-slate-400 font-bold">Ninguna solicitud evaluada en este ciclo operativo.</div>`;
-      } else {
-        procesados.forEach(pr => {
-          const card = document.createElement("div");
-          const esAprobado = pr.status === "Aprobado";
-          card.className = `bg-white border-l-4 ${esAprobado ? 'border-emerald-500' : 'border-rose-500'} rounded-xl border border-slate-200 p-4 space-y-2 shadow-sm`;
-          card.innerHTML = `
-            <div class="flex justify-between items-start">
-              <div>
-                <h5 class="font-bold text-xs text-slate-800">${pr.solicitante.usuario}</h5>
-                <span class="text-[9px] text-slate-400 font-medium">${pr.solicitante.empresa}</span>
-              </div>
-              <span class="${esAprobado ? 'bg-emerald-50 text-emerald-600' : 'bg-rose-50 text-rose-600'} font-black text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider">${pr.status}</span>
-            </div>
-            <p class="text-[10px] text-slate-500 truncate"><span class="font-bold">Estructura:</span> ${pr.principal} + ${pr.aduana} + ${pr.transporte}</p>
-            <div class="flex justify-between items-center text-[9px] pt-1 border-t text-slate-400">
-              <span class="font-mono">${pr.id}</span>
-              <button onclick="dictaminarSolicitud('${pr.id}', 'Pendiente')" class="text-[#00B4D8] font-bold hover:underline uppercase tracking-wide"><i class="fa-solid fa-arrow-rotate-left mr-1"></i>Reevaluar</button>
-            </div>
-          `;
-          historyListAdmin.appendChild(card);
-        });
+  // 9. ESCRITURA EN FIRESTORE (NUEVA CADENA)
+  window.procesarNuevaCadena = async function(e) {
+    e.preventDefault();
+    const nuevaCadena = {
+      idVisual: "REQ-" + Math.floor(100000 + Math.random() * 900000),
+      solicitante: {
+        usuario: window.currentUser.usuario,
+        empresa: window.currentUser.empresa,
+        correo: window.currentUser.correo
+      },
+      principal: document.getElementById("cadena-select-principal").value,
+      aduana: document.getElementById("cadena-select-aduana").value,
+      transporte: document.getElementById("cadena-select-transporte").value,
+      detalles: document.getElementById("cadena-detalle-carga").value.trim(),
+      status: "Pendiente",
+      fecha: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "solicitudes"), nuevaCadena);
+      document.getElementById("form-cadena").reset();
+      await window.renderizarHistorialYModulosAdmin();
+      window.switchTab('historial');
+      window.mostrarDecisionModal("Estructura Registrada", "Tu propuesta ha sido guardada en Firestore y transmitida al panel central.", "border-emerald-500", "text-emerald-500", "fa-solid fa-circle-check bg-emerald-50 text-emerald-500");
+    } catch (error) {
+      console.error("Error guardando documento:", error);
+      window.mostrarDecisionModal("Error", "No se pudo comunicar con el servidor.", "border-rose-500", "text-rose-500", "fa-solid fa-triangle-exclamation");
+    }
+  };
+
+  // 10. ACTUALIZACIÓN EN FIRESTORE (ADMIN VEREDICTOS)
+  window.dictaminarSolicitud = async function(firebaseId, idVisual, nuevoEstado) {
+    try {
+      const solicitudRef = doc(db, "solicitudes", firebaseId);
+      await updateDoc(solicitudRef, { status: nuevoEstado });
+      await window.renderizarHistorialYModulosAdmin();
+      
+      if(nuevoEstado === 'Aprobado') {
+        window.mostrarDecisionModal("Estructura Homologada", `La solicitud ${idVisual} ha sido validada permanentemente en la nube.`, "border-emerald-500", "text-emerald-500", "fa-solid fa-shield-checkmark bg-emerald-50 text-emerald-600");
+      } else if(nuevoEstado === 'Denegado') {
+        window.mostrarDecisionModal("Estructura Denegada", `La combinación ${idVisual} ha sido rechazada en la base de datos central.`, "border-rose-500", "text-rose-500", "fa-solid fa-circle-xmark bg-rose-50 text-rose-600");
+      }
+    } catch (error) {
+      console.error("Error actualizando estado:", error);
+    }
+  };
+
+  // ELIMINACIÓN DE REGISTROS EN FIRESTORE
+  window.eliminarRegistroHistorial = async function(firebaseId) {
+    if (confirm("¿Confirmas la eliminación permanente de este registro de Firebase?")) {
+      try {
+        await deleteDoc(doc(db, "solicitudes", firebaseId));
+        await window.renderizarHistorialYModulosAdmin();
+      } catch(e) {
+        console.error("Error al borrar registro:", e);
       }
     }
+  };
 
-    // 3. Control de Usuarios Aliados de la Red
-    const usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
-    if(userListAdmin) {
-      usuarios.forEach(u => {
-        const item = document.createElement("div");
-        item.className = "bg-slate-50 border rounded-xl p-3 flex items-center justify-between gap-3 hover:bg-slate-100/70 transition-all";
-        item.innerHTML = `
-          <div class="overflow-hidden">
-            <p class="font-bold text-xs text-[#082545] truncate">${u.usuario}</p>
-            <span class="text-[10px] text-slate-400 block truncate uppercase tracking-tight">${u.empresa}</span>
-          </div>
-          <div class="flex gap-1 shrink-0">
-            <button onclick="abrirInspectorModal('${u.correo}')" class="bg-slate-200 hover:bg-slate-300 text-slate-700 w-7 h-7 rounded-lg flex items-center justify-center text-xs transition-all shadow-sm" title="Inspeccionar Credenciales"><i class="fa-solid fa-address-card"></i></button>
-            <button onclick="eliminarUsuarioAliado('${u.correo}')" class="bg-rose-50 hover:bg-rose-100 text-rose-600 w-7 h-7 rounded-lg flex items-center justify-center text-xs border border-rose-200 transition-all shadow-sm" title="Revocar Acceso"><i class="fa-solid fa-user-minus"></i></button>
-          </div>
-        `;
-        userListAdmin.appendChild(item);
+  // UTILIDADES UI Y MODALES
+  window.mostrarDecisionModal = function(titulo, mensaje, colorBorde, colorTexto, clasesIcono) {
+    document.getElementById("modal-title").innerText = titulo;
+    document.getElementById("modal-title").className = `font-black text-lg uppercase tracking-wide ${colorTexto}`;
+    document.getElementById("modal-message").innerText = mensaje;
+    const bar = document.getElementById("modal-top-bar");
+    bar.className = `absolute top-0 left-0 right-0 h-2 ${colorBorde.replace('border-', 'bg-')}`;
+    const iconContainer = document.getElementById("modal-icon-container");
+    iconContainer.className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-inner ${clasesIcono.split(' ').slice(1).join(' ')}`;
+    document.getElementById("modal-icon").className = clasesIcono.split(' ')[0] + " " + clasesIcono.split(' ')[1];
+    document.getElementById("decision-modal").classList.remove("hidden");
+  };
+
+  window.cerrarDecisionModal = function() {
+    document.getElementById("decision-modal").classList.add("hidden");
+  };
+
+  window.abrirInspectorModal = async function(correo) {
+    let targetUser = null;
+    
+    if (correo === "admin@cirrus.network") {
+      targetUser = { usuario: "Administrador del Sistema", empresa: "CIRRUS Logistics Headquarters", correo: "admin@cirrus.network", rif: "G-20019426-0", telefono: "04262262547", rol: "Administrador", fotoPerfil: "" };
+    } else {
+      // Buscar en Firestore
+      const usersSnapshot = await getDocs(collection(db, "usuarios"));
+      usersSnapshot.forEach(doc => {
+        if(doc.data().correo.toLowerCase() === correo.toLowerCase()) {
+          targetUser = doc.data();
+        }
       });
     }
-  }
-}
 
-// PROCESAMIENTO DE PROPUESTAS DE CADENA LOGÍSTICA
-function procesarNuevaCadena(e) {
-  e.preventDefault();
-  const nuevaCadena = {
-    id: "REQ-" + Math.floor(100000 + Math.random() * 900000),
-    solicitante: {
-      usuario: currentUser.usuario,
-      empresa: currentUser.empresa,
-      correo: currentUser.correo
-    },
-    principal: document.getElementById("cadena-select-principal").value,
-    aduana: document.getElementById("cadena-select-aduana").value,
-    transporte: document.getElementById("cadena-select-transporte").value,
-    detalles: document.getElementById("cadena-detalle-carga").value.trim(),
-    status: "Pendiente"
+    if (!targetUser) return;
+
+    document.getElementById("inspected-name").innerText = targetUser.usuario;
+    document.getElementById("inspected-company").innerText = targetUser.empresa;
+    document.getElementById("inspected-rif").innerText = targetUser.rif;
+    document.getElementById("inspected-email").innerText = targetUser.correo;
+    document.getElementById("inspected-phone").innerText = targetUser.telefono;
+    document.getElementById("inspected-role").innerText = targetUser.rol;
+
+    const avatar = document.getElementById("inspected-avatar");
+    if(targetUser.fotoPerfil) {
+      avatar.style.backgroundImage = `url('${targetUser.fotoPerfil}')`;
+      avatar.innerText = "";
+    } else {
+      avatar.style.backgroundImage = "none";
+      avatar.innerText = targetUser.usuario.charAt(0).toUpperCase();
+    }
+    
+    document.getElementById("profile-inspector-modal").classList.remove("hidden");
   };
 
-  let historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
-  historial.unshift(nuevaCadena);
-  localStorage.setItem("cirrus_historial", JSON.stringify(historial));
+  window.cerrarInspectorModal = function() {
+    document.getElementById("profile-inspector-modal").classList.add("hidden");
+  };
 
-  document.getElementById("form-cadena").reset();
-  renderizarHistorialYModulosAdmin();
-  switchTab('historial');
+  window.procesarFotoPerfil = async function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  mostrarDecisionModal("Estructura Registrada", "Tu propuesta de combinación logística ha sido transmitida al panel de control central para la verificación del Administrador.", "border-emerald-500", "text-emerald-500", "fa-solid fa-circle-check bg-emerald-50 text-emerald-500");
-}
-
-// CONTROL TÉCNICO DE SOLICITUDES (ADMIN)
-function dictaminarSolicitud(id, nuevoEstado) {
-  let historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
-  const reqIndex = historial.findIndex(h => h.id === id);
-  
-  if(reqIndex !== -1) {
-    historial[reqIndex].status = nuevoEstado;
-    localStorage.setItem("cirrus_historial", JSON.stringify(historial));
-    renderizarHistorialYModulosAdmin();
-    
-    if(nuevoEstado === 'Aprobado') {
-      mostrarDecisionModal("Estructura Homologada", `La solicitud ${id} ha sido validada y archivada con veredicto aprobatorio permanente.`, "border-emerald-500", "text-emerald-500", "fa-solid fa-shield-checkmark bg-emerald-50 text-emerald-600");
-    } else if(nuevoEstado === 'Denegado') {
-      mostrarDecisionModal("Estructura Denegada", `La combinación del registro ${id} ha sido archivada bajo restricción técnica de la red.`, "border-rose-500", "text-rose-500", "fa-solid fa-circle-xmark bg-rose-50 text-rose-600");
-    }
-  }
-}
-
-// GESTIÓN DE MODAL DE INFORMACIÓN / RESPUESTA
-function mostrarDecisionModal(titulo, mensaje, colorBorde, colorTexto, clasesIcono) {
-  document.getElementById("modal-title").innerText = titulo;
-  document.getElementById("modal-title").className = `font-black text-lg uppercase tracking-wide ${colorTexto}`;
-  document.getElementById("modal-message").innerText = mensaje;
-  
-  const bar = document.getElementById("modal-top-bar");
-  bar.className = `absolute top-0 left-0 right-0 h-2 ${colorBorde.replace('border-', 'bg-')}`;
-  
-  const iconContainer = document.getElementById("modal-icon-container");
-  iconContainer.className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl shadow-inner ${clasesIcono.split(' ').slice(1).join(' ')}`;
-  
-  document.getElementById("modal-icon").className = clasesIcono.split(' ')[0] + " " + clasesIcono.split(' ')[1];
-  
-  document.getElementById("decision-modal").classList.remove("hidden");
-}
-
-function cerrarDecisionModal() {
-  document.getElementById("decision-modal").classHtml = document.getElementById("decision-modal").classList.add("hidden");
-}
-
-// MODAL INSPECTOR DE PERFIL COMPLETO
-function abrirInspectorModal(correo) {
-  let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
-  
-  // COMPROBACIÓN ADICIONAL PARA INSPECCIONAR AL ADMINISTRADOR
-  let u = correo === "admin@cirrus.network" ? {
-    usuario: "Administrador del Sistema",
-    empresa: "CIRRUS Logistics Headquarters",
-    correo: "admin@cirrus.network",
-    rif: "G-20019426-0",
-    telefono: "04162409427",
-    rol: "Administrador",
-    fotoPerfil: ""
-  } : usuarios.find(user => user.correo.toLowerCase() === correo.toLowerCase());
-
-  if (!u) return;
-
-  document.getElementById("inspected-name").innerText = u.usuario;
-  document.getElementById("inspected-company").innerText = u.empresa;
-  document.getElementById("inspected-rif").innerText = u.rif;
-  document.getElementById("inspected-email").innerText = u.correo;
-  document.getElementById("inspected-phone").innerText = u.telefono;
-  document.getElementById("inspected-role").innerText = u.rol;
-
-  const avatar = document.getElementById("inspected-avatar");
-  if(u.fotoPerfil) {
-    avatar.style.backgroundImage = `url('${u.fotoPerfil}')`;
-    avatar.innerText = "";
-  } else {
-    avatar.style.backgroundImage = "none";
-    avatar.innerText = u.usuario.charAt(0).toUpperCase();
-  }
-
-  const actionArea = document.getElementById("inspector-action-area");
-  actionArea.innerHTML = "";
-  
-  if (currentUser.rol === "Administrador" && u.rol !== "Administrador") {
-    actionArea.innerHTML = `
-      <button onclick="eliminarUsuarioAliado('${u.correo}'); cerrarInspectorModal();" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-2 rounded-xl text-xs uppercase tracking-wider transition-all">
-        Remover Acceso
-      </button>
-    `;
-  }
-
-  document.getElementById("profile-inspector-modal").classList.remove("hidden");
-}
-
-function cerrarInspectorModal() {
-  document.getElementById("profile-inspector-modal").classList.add("hidden");
-}
-
-// ELIMINACIÓN DE REGISTROS MOCK
-function eliminarRegistroHistorial(id) {
-  let historial = JSON.parse(localStorage.getItem("cirrus_historial")) || [];
-  historial = historial.filter(h => h.id !== id);
-  localStorage.setItem("cirrus_historial", JSON.stringify(historial));
-  renderizarHistorialYModulosAdmin();
-}
-
-function borrarTodoElHistorial() {
-  if (confirm("¿Estás seguro de que deseas purgar la totalidad de los registros del historial?")) {
-    localStorage.setItem("cirrus_historial", JSON.stringify([]));
-    renderizarHistorialYModulosAdmin();
-  }
-}
-
-function eliminarUsuarioAliado(correo) {
-  if (confirm(`¿Proceder a revocar de forma irrevocable las credenciales operativas vinculadas a ${correo}?`)) {
-    let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
-    usuarios = usuarios.filter(u => u.correo.toLowerCase() !== correo.toLowerCase());
-    localStorage.setItem("cirrus_usuarios", JSON.stringify(usuarios));
-    renderizarHistorialYModulosAdmin();
-  }
-}
-
-function eliminarOperador(id) {
-  if (confirm("¿Confirmas la exclusión de este operador logístico del directorio activo?")) {
-    let ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
-    ops = ops.filter(o => o.id !== id);
-    localStorage.setItem("cirrus_operadores", JSON.stringify(ops));
-    construirCatalogosYListas();
-  }
-}
-
-// PROCESAMIENTO DE ARCHIVOS BINARIOS PARA FOTO DE PERFIL (BASE64)
-function procesarFotoPerfil(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onloadend = function() {
-    const base64Data = reader.result;
-    currentUser.fotoPerfil = base64Data;
-    
-    // Sincronizar en el Storage local si es un usuario común
-    if(currentUser.rol !== "Administrador") {
-      let usuarios = JSON.parse(localStorage.getItem("cirrus_usuarios")) || [];
-      const idx = usuarios.findIndex(u => u.correo.toLowerCase() === currentUser.correo.toLowerCase());
-      if(idx !== -1) {
-        usuarios[idx].fotoPerfil = base64Data;
-        localStorage.setItem("cirrus_usuarios", JSON.stringify(usuarios));
+    const reader = new FileReader();
+    reader.onloadend = async function() {
+      const base64Data = reader.result;
+      window.currentUser.fotoPerfil = base64Data;
+      
+      // Guardar actualización de foto en Firestore
+      if(window.currentUser.rol !== "Administrador") {
+        try {
+          const userRef = doc(db, "usuarios", window.currentUser.uid);
+          await updateDoc(userRef, { fotoPerfil: base64Data });
+        } catch(err) {
+          console.error("Error guardando foto en Firestore", err);
+        }
       }
-    }
-    
-    abrirSistemaInyectado(currentUser);
-    mostrarDecisionModal("Imagen Actualizada", "El elemento gráfico de perfil ha sido codificado e inyectado con éxito.", "border-emerald-500", "text-emerald-500", "fa-solid fa-image bg-emerald-50 text-emerald-600");
+      
+      window.abrirSistemaInyectado(window.currentUser);
+      window.mostrarDecisionModal("Imagen Actualizada", "El elemento gráfico se ha sincronizado en tu perfil.", "border-emerald-500", "text-emerald-500", "fa-solid fa-image bg-emerald-50 text-emerald-600");
+    };
+    reader.readAsDataURL(file);
   };
-  reader.readAsDataURL(file);
-}
 
-// CONTROL DEL ASISTENTE INTELIGENTE CIRRUS AI (MOCKUP)
-function toggleCirrusAI() {
-  const win = document.getElementById("cirrus-ai-window");
-  if(win.classList.contains("hidden")) {
-    win.classList.remove("hidden");
-    setTimeout(() => {
-      win.classList.remove("scale-95", "opacity-0");
-      win.classList.add("scale-100", "opacity-100");
-    }, 10);
-  } else {
-    win.classList.remove("scale-100", "opacity-100");
-    win.classList.add("scale-95", "opacity-0");
-    setTimeout(() => win.classList.add("hidden"), 300);
-  }
-}
-
-function handleCirrusAISubmit(e) {
-  e.preventDefault();
-  const input = document.getElementById("cirrus-ai-input");
-  const msg = input.value.trim();
-  if(!msg) return;
-
-  appendAiMessage('user', msg);
-  input.value = "";
-
-  setTimeout(() => {
-    let resp = "Entendido. Analizando la viabilidad de la carga con la red de operadores certificados... Para cotizaciones específicas o asignaciones directas de Patio, te sugiero estructurar la ruta formal desde el módulo 'Cadena Logística'.";
-    
-    const token = msg.toLowerCase();
-    if(token.includes("barco") || token.includes("mar") || token.includes("naviera") || token.includes("contenedor")) {
-      resp = "Para tránsitos marítimos internacionales, dispones en red de las estructuras consolidadas de <strong>Hapag-Lloyd</strong> y <strong>Maersk Line</strong> con salidas semanales desde los Hubs de Puerto Cabello y La Guaira.";
-    } else if(token.includes("avion") || token.includes("aereo") || token.includes("urgente") || token.includes("farmaco")) {
-      resp = "Ante requerimientos de alta prioridad temporal (fármacos/tecnología), la sección de <strong>Líneas Aéreas</strong> cuenta con tránsitos directos de 1 a 2 días hacia Miami y Madrid.";
+  window.eliminarOperador = function(id) {
+    if (confirm("¿Confirmas la exclusión de este operador logístico?")) {
+      let ops = JSON.parse(localStorage.getItem("cirrus_operadores")) || [];
+      ops = ops.filter(o => o.id !== id);
+      localStorage.setItem("cirrus_operadores", JSON.stringify(ops));
+      window.construirCatalogosYListas();
     }
-    appendAiMessage('bot', resp);
-  }, 700);
-}
+  };
 
-function appendAiMessage(sender, text) {
-  const container = document.getElementById('cirrus-ai-messages');
-  const div = document.createElement('div');
-  div.className = sender === 'user' ? "flex items-start space-x-2 justify-end text-right" : "flex items-start space-x-2";
-  
-  div.innerHTML = sender === 'user' ? `
-    <div class="bg-blue-600 text-white rounded-2xl px-3.5 py-2.5 shadow-sm max-w-[80%] inline-block">${text}</div>
-  ` : `
-    <div class="w-7 h-7 rounded-lg bg-[#082545] text-white flex items-center justify-center text-[10px] shrink-0"><i class="fa-solid fa-robot"></i></div>
-    <div class="bg-white border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-sm text-slate-700 max-w-[80%] inline-block">${text}</div>
-  `;
-  container.appendChild(div);
-  container.scrollTop = container.scrollHeight;
-}
+  // CIRRUS AI WIDGET
+  window.toggleCirrusAI = function() {
+    const win = document.getElementById("cirrus-ai-window");
+    if(win.classList.contains("hidden")) {
+      win.classList.remove("hidden");
+      setTimeout(() => {
+        win.classList.remove("scale-95", "opacity-0");
+        win.classList.add("scale-100", "opacity-100");
+      }, 10);
+    } else {
+      win.classList.remove("scale-100", "opacity-100");
+      win.classList.add("scale-95", "opacity-0");
+      setTimeout(() => win.classList.add("hidden"), 300);
+    }
+  };
 
-function recargarPagina() {
-  construirCatalogosYListas();
-  mostrarDecisionModal("Red Sincronizada", "Los almacenes de datos y operadores se han restablecido con los parámetros del servidor local.", "border-amber-400", "text-amber-500", "fa-solid fa-rotate bg-amber-50 text-amber-500");
-}
+  window.handleCirrusAISubmit = function(e) {
+    e.preventDefault();
+    const input = document.getElementById("cirrus-ai-input");
+    const msg = input.value.trim();
+    if(!msg) return;
 
-function logout() {
-  currentUser = null;
-  document.getElementById("app-interface").classList.add("hidden");
-  document.getElementById("auth-screen").classList.remove("hidden");
-  changeAuthViewState('login');
-}
+    window.appendAiMessage('user', msg);
+    input.value = "";
 
-// TEMPORIZADOR DEL SPLASH SCREEN
-window.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    const splash = document.getElementById("splash-screen");
-    splash.classList.add("opacity-0", "pointer-events-none");
-    setTimeout(() => splash.remove(), 1000);
-  }, 1500);
-});
+    setTimeout(() => {
+      let resp = "Entendido. Para cotizaciones específicas o asignaciones directas de Patio, te sugiero estructurar la ruta formal desde el módulo 'Cadena Logística'.";
+      const token = msg.toLowerCase();
+      if(token.includes("barco") || token.includes("mar") || token.includes("naviera")) {
+        resp = "Para tránsitos marítimos internacionales, dispones en red de las estructuras de <strong>Hapag-Lloyd</strong> y <strong>Maersk Line</strong>.";
+      } else if(token.includes("avion") || token.includes("aereo") || token.includes("urgente")) {
+        resp = "Ante requerimientos de alta prioridad temporal, dispones de <strong>Líneas Aéreas</strong> con tránsitos directos de 1 a 2 días.";
+      }
+      window.appendAiMessage('bot', resp);
+    }, 700);
+  };
+
+  window.appendAiMessage = function(sender, text) {
+    const container = document.getElementById('cirrus-ai-messages');
+    const div = document.createElement('div');
+    div.className = sender === 'user' ? "flex items-start space-x-2 justify-end text-right" : "flex items-start space-x-2";
+    div.innerHTML = sender === 'user' ? `<div class="bg-blue-600 text-white rounded-2xl px-3.5 py-2.5 shadow-sm max-w-[80%] inline-block">${text}</div>` : `<div class="w-7 h-7 rounded-lg bg-[#082545] text-white flex items-center justify-center text-[10px] shrink-0"><i class="fa-solid fa-robot"></i></div><div class="bg-white border border-slate-200 rounded-2xl px-3.5 py-2.5 shadow-sm text-slate-700 max-w-[80%] inline-block">${text}</div>`;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  };
+
+  window.recargarPagina = function() {
+    window.construirCatalogosYListas();
+    window.mostrarDecisionModal("Red Sincronizada", "Los datos en tiempo real de Firebase se han actualizado con éxito.", "border-amber-400", "text-amber-500", "fa-solid fa-rotate bg-amber-50 text-amber-500");
+  };
+
+  window.logout = async function() {
+    try {
+      await signOut(auth);
+      window.currentUser = null;
+      document.getElementById("app-interface").classList.add("hidden");
+      document.getElementById("auth-screen").classList.remove("hidden");
+      window.changeAuthViewState('login');
+    } catch (error) {
+      console.error("Error al cerrar sesión: ", error);
+    }
+  };
+
+  // INICIALIZACIÓN VISUAL (SPLASH SCREEN)
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+      const splash = document.getElementById("splash-screen");
+      splash.classList.add("opacity-0", "pointer-events-none");
+      setTimeout(() => splash.remove(), 1000);
+    }, 1500);
+  });
 </script>
 
 </body>
